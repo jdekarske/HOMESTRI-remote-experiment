@@ -1,3 +1,8 @@
+# Other stuff
+.devcontainer
+mongoDB
+
+# ROS stuff
 devel/
 logs/
 build/
