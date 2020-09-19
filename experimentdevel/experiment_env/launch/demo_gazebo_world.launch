@@ -27,7 +27,7 @@
   <!-- launch the gazebo simulator and spawn the robot -->
   <!-- startup simulated world -->
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
-    <arg name="world_name" default="/catkin_ws/src/experimentdevel/world/demo_world.world"/>
+    <arg name="world_name" default="$(find experiment_world)/demo_world.world"/>
     <arg name="paused" value="$(arg paused)"/>
     <arg name="gui" value="$(arg gazebo_gui)"/>
   </include>

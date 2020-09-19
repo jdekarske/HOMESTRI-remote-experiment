@@ -112,7 +112,7 @@
         <visual name='visual'>
           <geometry>
             <mesh>
-              <uri>/catkin_ws/src/experimentdevel/world/interface/meshes/interface_dec.dae</uri>
+              <uri>$(find experiment_world)/interface/meshes/interface_dec.dae</uri>
             </mesh>
           </geometry>
         </visual>
@@ -391,7 +391,7 @@
       <sim_time>0</sim_time>
       <real_time>0</real_time>
       <wall_time>0</wall_time>
-      <iterations>0</iterations>
+      <iterations>1293756</iterations>
       <model name='ground_plane'>
         <pose frame=''>0 0 0 0 -0 0</pose>
         <scale>1 1 1</scale>
@@ -403,33 +403,103 @@
         </link>
       </model>
       <model name='interface'>
-        <pose frame=''>-0.5 0.3 1 0 -0 0</pose>
+        <pose frame=''>0 0 1 0 -0 0</pose>
         <scale>1 1 1</scale>
         <link name='chassis'>
-          <pose frame=''>-0.5 0.3 1 0 -0 0</pose>
+          <pose frame=''>0 0 1 0 -0 0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='module'>
+        <pose frame=''>1.10469 -1.63231 1.055 3e-06 2e-06 -7e-06</pose>
+        <scale>1 1 1</scale>
+        <link name='chassis'>
+          <pose frame=''>1.10469 -1.63231 1.055 3e-06 2e-06 -7e-06</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>-0.030462 0.022847 -0.265483 -0.571161 -0.761538 0</acceleration>
+          <wrench>-0.030462 0.022847 -0.265483 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='module_0'>
+        <pose frame=''>0.708769 -2.04573 1.05502 0.00036 0 -5e-06</pose>
+        <scale>1 1 1</scale>
+        <link name='chassis'>
+          <pose frame=''>0.708769 -2.04573 1.05502 0.00036 0 -5e-06</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 -9.8 0 -0 0</acceleration>
+          <wrench>0 0 -9.8 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='monkey wrench'>
+        <pose frame=''>0.968831 -1.22651 1.02277 0.023234 0.021325 0.000222</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose frame=''>0.968831 -1.22651 1.02277 0.023234 0.021325 0.000222</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>-0.000479 -3.9e-05 -9.46449 0.004769 -0.061701 0</acceleration>
+          <wrench>-0.000479 -3.9e-05 -9.46449 0 -0 0</wrench>
         </link>
       </model>
       <model name='person_standing'>
-        <pose frame=''>-0.7 -0.8 -0 0 0 1.571</pose>
+        <pose frame=''>0.003732 -0.960011 -0 -1e-06 -1e-06 1.50087</pose>
         <scale>1 1 1</scale>
         <link name='link'>
-          <pose frame=''>-0.7 -0.8 -0 0 0 1.571</pose>
+          <pose frame=''>0.003732 -0.960011 -0 -1e-06 -1e-06 1.50087</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0.97713 -1.61867 -1.83947 1.64344 1.07966 -0.043013</acceleration>
+          <wrench>78.1704 -129.493 -147.158 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='pulley_part'>
+        <pose frame=''>0.703061 -0.959295 1.01501 -5.3e-05 -7e-06 -0.001155</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose frame=''>0.703061 -0.959295 1.01501 -5.3e-05 -7e-06 -0.001155</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>-0 1e-06 19.6 -3.6e-05 -1e-05 1e-06</acceleration>
+          <wrench>-0 0 9.8 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='table'>
+        <pose frame=''>0.911818 -1.46086 0 0 -0 1.571</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose frame=''>0.911818 -1.46086 0 0 -0 1.571</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
       </model>
-      <model name='table'>
-        <pose frame=''>0.2 -0.6 0 0 -0 1.571</pose>
+      <model name='tube_2_25cm'>
+        <pose frame=''>0.993757 -1.89718 1.014 1.7e-05 -3.2e-05 -0.000297</pose>
         <scale>1 1 1</scale>
         <link name='link'>
-          <pose frame=''>0.2 -0.6 0 0 -0 1.571</pose>
+          <pose frame=''>0.993755 -1.89718 1.07125 1.7e-05 -3.2e-05 -0.000297</pose>
           <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>0 0 0 0 -0 0</acceleration>
-          <wrench>0 0 0 0 -0 0</wrench>
+          <acceleration>0.095532 -0.127095 0.003455 -0.901055 1.45624 -3.11617</acceleration>
+          <wrench>0.003382 -0.004499 0.000122 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='wood_cube_10cm'>
+        <pose frame=''>0.936677 -1.57088 1.01399 0 -0 0</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose frame=''>0.936677 -1.57088 1.06399 0 -0 0</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>-0 -0 0 0 -0 0</acceleration>
+          <wrench>-0 -0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='wooden_peg'>
+        <pose frame=''>0.611567 -1.857 1.01433 0.033987 0.002571 9.8e-05</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose frame=''>0.61167 -1.85836 1.05431 0.033987 0.002571 9.8e-05</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>-1e-06 -9e-06 2e-06 0.000238 -1.3e-05 1.1e-05</acceleration>
+          <wrench>-0 -0 0 0 -0 0</wrench>
         </link>
       </model>
       <light name='sun'>
@@ -438,7 +508,7 @@
     </state>
     <gui fullscreen='0'>
       <camera name='user_camera'>
-        <pose frame=''>5.53276 -2.40029 3.08671 0 0.369795 2.89219</pose>
+        <pose frame=''>3.83723 -5.14522 4.39825 0 0.723643 2.25219</pose>
         <view_controller>orbit</view_controller>
         <projection_type>perspective</projection_type>
       </camera>

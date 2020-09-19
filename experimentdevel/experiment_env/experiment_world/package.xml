@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>experiment_world</name>
+  <version>0.0.0</version>
+  <description>The experiment_world package. This is the experimental setup used for a collaborative HAT task.</description>
+
+  <author email="jdekarske@ucdavis.edu">Jason Dekarske</author>
+  <maintainer email="jdekarske@ucdavis.edu">Jason Dekarske</maintainer>
+
+  <license>MIT</license>
+
+  <url type="website">https://homestri.ucdavis.edu/</url>
+  <url type="repo">https://github.com/jdekarske/HOMESTRI-remote-experiment</url>
+
+  <!-- The *depend tags are used to specify dependencies -->
+  <!-- Dependencies can be catkin packages or system dependencies -->
+  <depend>gazebo_ros</depend>>
+  <buildtool_depend>catkin</buildtool_depend>
+
+
+  <!-- The export tag contains other, unspecified, tags -->
+  <export>
+    <!-- <gazebo_ros plugin_path="${prefix}/../../lib" gazebo_media_path="${prefix}" /> -->
+  </export>
+</package>

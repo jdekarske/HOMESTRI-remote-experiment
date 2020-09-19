@@ -2,7 +2,7 @@
     <arg name="robot_name"/>
     <arg name="init_pose"/>
     <arg name="limited" default="true"/>
-    <arg name="world_path" default="/catkin_ws/src/experimentdevel/world/demo_world.world"/>
+    <arg name="world_path" default="$(find experiment_world)/demo_world.world"/>
 
     <!-- Gazebo specific options -->
     <param name="/use_sim_time" value="true" />
