@@ -5,6 +5,9 @@
 
 #include <sstream>
 
+const float cube_size = 0.064;
+const float cube_mass = 1.0;
+
 // A lot of help from https://github.com/JenniferBuehler/gazebo-pkgs/blob/master/gazebo_test_tools/src/cube_spawner.cpp!
 
 bool spawncube(float x, float y, float z, uint id)
@@ -22,8 +25,8 @@ bool spawncube(float x, float y, float z, uint id)
     model.request.initial_pose = initial_pose;
     model.request.reference_frame = "";
 
-    float size[] = {0.064, 0.064, 0.064}; //m robotiq stroke is 0.085
-    float mass = 1; //kg
+    float size[] = {cube_size, cube_size, cube_size}; //m robotiq stroke is 0.085
+    float mass = cube_mass; //kg
     float inertia = mass*size[0]*size[0] / 0.6;
     std::string model_name = "my_model";
     float red = (float) rand()/RAND_MAX;
@@ -32,11 +35,11 @@ bool spawncube(float x, float y, float z, uint id)
 
     std::stringstream _s;
 
-    // http://gazebosim.org/tutorials?tut=build_model (size[1]/2.0)
+    // http://gazebosim.org/tutorials?tut=build_model
     _s<<"<?xml version='1.0'?>\
     <sdf version='1.4'>\
     <model name='"<<model_name<<"'>\
-        <pose>0 0 "<<0<<" 0 0 0</pose>\
+        <pose>0 0 "<<(size[1]/2)<<" 0 0 0</pose>\
         <static>false</static>\
         <link name='link'>\
         <inertial>\
