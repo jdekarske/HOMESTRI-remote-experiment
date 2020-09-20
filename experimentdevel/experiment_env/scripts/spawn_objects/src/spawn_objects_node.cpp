@@ -10,7 +10,7 @@ const float cube_mass = 1.0;
 
 // A lot of help from https://github.com/JenniferBuehler/gazebo-pkgs/blob/master/gazebo_test_tools/src/cube_spawner.cpp!
 
-bool spawncube(float x, float y, float z, uint id)
+bool spawncube(float x, float y, float z, uint id, float red=-1, float green=-1, float blue=-1)
 {
     //This does not check if there is already a model present with the same name
     geometry_msgs::Pose initial_pose;
@@ -28,10 +28,16 @@ bool spawncube(float x, float y, float z, uint id)
     float size[] = {cube_size, cube_size, cube_size}; //m robotiq stroke is 0.085
     float mass = cube_mass; //kg
     float inertia = mass*size[0]*size[0] / 0.6;
-    std::string model_name = "my_model";
-    float red = (float) rand()/RAND_MAX;
-    float green = (float) rand()/RAND_MAX;
-    float blue = (float) rand()/RAND_MAX;
+    std::string model_name = "my_cube";
+    if(red == -1){
+        red = (float) rand()/RAND_MAX;
+    }
+    if(green == -1){
+        green = (float) rand()/RAND_MAX;
+    }
+    if(blue == -1){
+        blue = (float) rand()/RAND_MAX;
+    }
 
     std::stringstream _s;
 
