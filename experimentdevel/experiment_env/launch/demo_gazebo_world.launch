@@ -32,6 +32,10 @@
     <arg name="gui" value="$(arg gazebo_gui)"/>
   </include>
 
+  <!-- Add camera -->
+  <node name="spawn_gazebo_model_camera" pkg="gazebo_ros" type="spawn_model" args="-sdf -file $(find experiment_world)/remote_camera/model.sdf -model remote_camera -x 0 -y -1.8 -z 2 -R 0 -P 0.6 -Y 1.2"
+    respawn="false" output="screen" />
+
   <!-- send robot urdf to param server -->
   <param name="robot_description" textfile="$(arg urdf_path)" />
 
@@ -69,9 +73,9 @@
     <arg name="debug" value="$(arg debug)"/>
   </include>  
 
-  <!-- Run Rviz and load the default config to see the state of the move_group node -->
+  <!-- Run Rviz and load the camera config to see the state of the move_group node -->
   <include file="$(find moveit_config)/launch/moveit_rviz.launch">
-    <arg name="rviz_config" value="$(find moveit_config)/launch/moveit.rviz"/>
+    <arg name="rviz_config" value="/catkin_ws/src/experimentdevel/experiment_env/launch/moveit_camera.rviz"/>
     <arg name="debug" value="$(arg debug)"/>
   </include>
 
