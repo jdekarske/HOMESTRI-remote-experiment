@@ -157,7 +157,7 @@ bool callback(spawn_objects::spawn_objects::Request &request, spawn_objects::spa
         else
         {
             // find the max id to iterate from
-            all_id = std::max(all_id, (int)(cubes[i].back() - '0'));
+            all_id = std::max(all_id, (int)(cubes[i].back() - '0'))+1;
         }
     }
 
@@ -183,6 +183,7 @@ bool callback(spawn_objects::spawn_objects::Request &request, spawn_objects::spa
         }
     }
 
+    response.status = status;
     return status;
 }
 
