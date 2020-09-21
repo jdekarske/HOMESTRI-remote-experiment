@@ -1,8 +1,10 @@
-# the object id in gazebo for which to spawn above
+# the object id in gazebo for which to spawn above (not implemented)
+# will delete existing cubes, otherwise will append the model ID
 # the number of objects along the length (long side of the table)
 # the number of objects along the width (short side of the table)
 
 string surface_name
+bool overwrite
 uint8 length
 uint8 width
 ---

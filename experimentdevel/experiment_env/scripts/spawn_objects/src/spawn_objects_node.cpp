@@ -2,6 +2,7 @@
 #include "spawn_objects/spawn_objects.h"
 #include "geometry_msgs/Pose.h"
 #include "gazebo_msgs/SpawnModel.h"
+#include "gazebo_msgs/DeleteModel.h"
 #include "gazebo_msgs/GetWorldProperties.h"
 
 #include <sstream>
@@ -9,6 +10,7 @@
 const float cube_size = 0.064;
 const float cube_mass = 1.0;
 const float offset_height = 0.05; // don't spawn *in* the table
+const char * model_prefix = "cube_";
 
 // A lot of help from https://github.com/JenniferBuehler/gazebo-pkgs/blob/master/gazebo_test_tools/src/cube_spawner.cpp!
 
@@ -21,8 +23,8 @@ bool spawncube(float x, float y, float z, uint id, float red = -1, float green =
     // initial_pose.orientation = ...;
 
     gazebo_msgs::SpawnModel model;
-    model.request.model_name = "block_" + std::to_string(id); // TODO This does not check if there is already a model present with the same name
-    model.request.robot_namespace = "/blocks";
+    model.request.model_name = model_prefix + std::to_string(id); // TODO This does not check if there is already a model present with the same name
+    model.request.robot_namespace = "/cubes";
     model.request.initial_pose = initial_pose;
     model.request.reference_frame = "";
 
@@ -107,8 +109,58 @@ bool spawncube(float x, float y, float z, uint id, float red = -1, float green =
     return true;
 }
 
+// These come from gazebo in the from "cube_i", probably starting with i=0
+// The argument is a substring of the model name
+std::vector<std::string> findModelNames(const char *str)
+{
+    std::vector<std::string> modelNames;
+    gazebo_msgs::GetWorldProperties world;
+    if (ros::service::call("/gazebo/get_world_properties", world))
+    {
+        std::vector<std::string> models = world.response.model_names;
+        for (size_t i = 0; i < models.size(); i++)
+        {
+            if (models[i].find(str) != std::string::npos)
+            {
+                modelNames.push_back(models[i]);
+            }
+        }
+    }
+    else
+    {
+        ROS_ERROR("Failed to get world properties");
+    }
+    return modelNames;
+}
+
 bool callback(spawn_objects::spawn_objects::Request &request, spawn_objects::spawn_objects::Response &response)
 {
+    std::vector<std::string> cubes = findModelNames(model_prefix);
+    int all_id = 0;
+
+    for (size_t i = 0; i < cubes.size(); i++)
+    {
+        if (request.overwrite)
+        {
+            //delete cubes
+            gazebo_msgs::DeleteModel dmodel;
+            dmodel.request.model_name = cubes[i];
+            if (ros::service::call("/gazebo/delete_model", dmodel))
+            {
+                ROS_INFO("Deleted model: %s", cubes[i].c_str());
+            }
+            else
+            {
+                ROS_ERROR("Failed to delete model: %s", cubes[i].c_str());
+            }
+        }
+        else
+        {
+            // find the max id to iterate from
+            all_id = std::max(all_id, (int)(cubes[i].back() - '0'));
+        }
+    }
+
     // Spawn a clump of objects centered at the middle of the object (table for now)
     // TODO: generalize this to any model in the scene, now it is hardcoded for the table
     uint8_t width_objs = request.width;   // number of objects along the width (x)
@@ -121,7 +173,6 @@ bool callback(spawn_objects::spawn_objects::Request &request, spawn_objects::spa
     float objectset_dim[] = {cube_separation * (width_objs - 1), cube_separation * (length_objs - 1)};      //distance of the sides of the object set
     float start_coord[] = {table_center[0] - objectset_dim[0] / 2, table_center[1] - objectset_dim[1] / 2}; //the coordinates of the first object
 
-    int all_id = 0;     // increment the ID. TODO, get the current max cube ID
     bool status = true; // make sure they ALL spawn successfully
     for (float x = start_coord[0]; x <= start_coord[0] + objectset_dim[0]; x = x + cube_separation)
     {
