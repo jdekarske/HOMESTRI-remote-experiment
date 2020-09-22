@@ -1,0 +1,7 @@
+# the object id to pick up (make it "cube_i" please)
+# where you want the object to go
+
+string pick_object
+geometry_msgs/Point place_position
+---
+bool status
