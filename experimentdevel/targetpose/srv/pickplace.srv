@@ -2,6 +2,7 @@
 # where you want the object to go
 
 string pick_object
-geometry_msgs/Point place_position
+string place_object
+# geometry_msgs/Point place_position
 ---
 bool status

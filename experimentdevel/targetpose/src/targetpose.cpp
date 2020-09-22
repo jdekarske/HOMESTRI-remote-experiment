@@ -14,7 +14,9 @@
 #include <targetpose/pickplace.h>
 #include <gazebo_msgs/GetModelState.h>
 
-const float pick_height = 0.28;
+const float pick_height = 0.15;
+const float place_height = 0.23;
+const float approach_height = 0.3;
 const float open_position = 0.0;
 const float closed_position = 0.25;
 
@@ -45,36 +47,59 @@ bool move(float x_des, float y_des, float z_des)
   return success;
 }
 
-bool pick(float objx, float objy)
+bool pick(float objx, float objy, float objz)
 {
-  bool success = true && move(objx, objy, pick_height) && moveGripper(open_position) && move(objx, objy, pick_height - 0.1) && moveGripper(closed_position) && move(objx, objy, pick_height);
+
+  bool success = true && move(objx, objy, objz + approach_height) && moveGripper(open_position) && move(objx, objy, objz + pick_height) && moveGripper(closed_position) && move(objx, objy, objz + approach_height);
   return success;
 }
 
-bool place(float objx, float objy)
+bool pick(std::string object_name)
 {
-  bool success = true && move(objx, objy, pick_height) && move(objx, objy, pick_height - 0.1) && moveGripper(open_position) && move(objx, objy, pick_height);
-  return true;
-}
-
-bool pickplaceCallback(targetpose::pickplace::Request &req, targetpose::pickplace::Response &res)
-{
-  // find out where the cube is
   gazebo_msgs::GetModelState model;
-  model.request.model_name = req.pick_object;
+  model.request.model_name = object_name;
   model.request.relative_entity_name = "robot";
+
   if (ros::service::call("/gazebo/get_model_state", model))
   {
     geometry_msgs::Point model_position = model.response.pose.position;
-    res.status = pick(model_position.x, model_position.y) && place(req.place_position.x, req.place_position.y); // this is poetic
-    return res.status;
+    return pick(model_position.x, model_position.y, model_position.z);
   }
   else
   {
     ROS_ERROR("Failed to get model state");
-    res.status = false;
-    return res.status;
+    return false;
   }
+}
+
+bool place(float objx, float objy, float objz)
+{
+  bool success = true && move(objx, objy, objz + approach_height) && move(objx, objy, objz + place_height) && moveGripper(open_position) && move(objx, objy, objz + approach_height);
+  return true;
+}
+
+bool place(std::string object_name)
+{
+  gazebo_msgs::GetModelState model;
+  model.request.model_name = object_name;
+  model.request.relative_entity_name = "robot";
+
+  if (ros::service::call("/gazebo/get_model_state", model))
+  {
+    geometry_msgs::Point model_position = model.response.pose.position;
+    return place(model_position.x, model_position.y, model_position.z);
+  }
+  else
+  {
+    ROS_ERROR("Failed to get model state");
+    return false;
+  }
+}
+
+bool pickplaceCallback(targetpose::pickplace::Request &req, targetpose::pickplace::Response &res)
+{
+  res.status = pick(req.pick_object) && place(req.place_object); // this is poetic
+  return res.status;
 }
 
 int main(int argc, char **argv)
@@ -88,6 +113,10 @@ int main(int argc, char **argv)
 
   manipulator_group = new moveit::planning_interface::MoveGroupInterface("manipulator");
   gripper_group = new moveit::planning_interface::MoveGroupInterface("gripper");
+  
+  ros::Duration(2).sleep();
+  manipulator_group->setNamedTarget("vertical");
+  manipulator_group->move();
 
   // manipulator_group->setPlanningTime(45.0); // Not sure why this was here
 
