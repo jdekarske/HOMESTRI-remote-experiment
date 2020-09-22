@@ -166,9 +166,9 @@ bool callback(spawn_objects::spawn_objects::Request &request, spawn_objects::spa
     uint8_t width_objs = request.width;   // number of objects along the width (x)
     uint8_t length_objs = request.length; // number of objects along the length (y)
 
-    float table_center[] = {0.2, -0.6}; // coords for the center of the table (x,y)
+    float table_center[] = {0.2, -0.4}; // coords for the center of the table (x,y)
     float table_height = 1.0;
-    float cube_separation = cube_size + 0.1; // defined from the middle of the cube
+    float cube_separation = cube_size + 0.07; // defined from the middle of the cube
 
     float objectset_dim[] = {cube_separation * (width_objs - 1), cube_separation * (length_objs - 1)};      //distance of the sides of the object set
     float start_coord[] = {table_center[0] - objectset_dim[0] / 2, table_center[1] - objectset_dim[1] / 2}; //the coordinates of the first object
