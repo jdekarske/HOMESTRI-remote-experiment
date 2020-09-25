@@ -31,6 +31,10 @@ RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 68818C72E52529D
 
 ##########################################
 
+COPY src/experiment_world /catkin_ws/src/experiment_world
+COPY src/targetpose /catkin_ws/src/targetpose
+COPY src/spawn_objects /catkin_ws/src/spawn_objects
+
 # Get everything going
 RUN source /opt/ros/$ROS_DISTRO/setup.bash \
  && apt-get update -qq \

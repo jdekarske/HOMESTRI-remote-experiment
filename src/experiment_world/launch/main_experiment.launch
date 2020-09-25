@@ -84,7 +84,7 @@
 
   <!-- Run Rviz and load the camera config to see the state of the move_group node -->
   <include file="$(find moveit_config)/launch/moveit_rviz.launch">
-    <arg name="rviz_config" value="/catkin_ws/src/experimentdevel/experiment_env/launch/moveit_camera.rviz"/>
+    <arg name="rviz_config" value="$(find experiment_world)/launch/moveit_camera.rviz"/>
     <arg name="debug" value="$(arg debug)"/>
   </include>
 
