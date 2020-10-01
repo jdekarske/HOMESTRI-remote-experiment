@@ -17,6 +17,7 @@
   This corresponds to moving around the real robot without the use of MoveIt.
   -->
   <arg name="use_gui" default="false" />
+  <arg name="rviz_gui" default="true" />
 
   <!-- Gazebo specific options -->
   <arg name="gazebo_gui" default="true"/>
@@ -83,7 +84,7 @@
   </include>  
 
   <!-- Run Rviz and load the camera config to see the state of the move_group node -->
-  <include file="$(find moveit_config)/launch/moveit_rviz.launch">
+  <include file="$(find moveit_config)/launch/moveit_rviz.launch" if="$(arg rviz_gui)">
     <arg name="rviz_config" value="$(find experiment_world)/launch/moveit_camera.rviz"/>
     <arg name="debug" value="$(arg debug)"/>
   </include>
