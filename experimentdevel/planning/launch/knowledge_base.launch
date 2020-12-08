@@ -5,33 +5,11 @@
 	<arg name="domain_path"	default="$(find ur5_e_planning)/pddl/domain_ur5_e.pddl" />
 	<arg name="problem_path"	default="$(find ur5_e_planning)/pddl/problem_ur5_e.pddl" />
 
-    <!-- mongoDB related parameters -->
-    <arg name="mongodb_host" default="localhost" />
-    <arg name="mongodb_port" default="27019" />    <!-- Do not use ubuntu default mongodb port : 27017-->
-    <arg name="database_path" default="$(find ur5_e_planning)/mongoDB" />
-
-    <!-- the desired ROS namespace -->
-    <!-- <arg name="namespace" default="ur5_e_planning" /> -->
-
-    <!-- scene database (MongoDB) -->
-    <node pkg="mongodb_store" type="mongodb_server.py" name="mongodb_server"
-          output="screen" >
-        <param name="master" value="false"/>
-        <param name="host" value="$(arg mongodb_host)" />
-        <param name="port" value="$(arg mongodb_port)" />
-        <param name="database_path" value="$(arg database_path)" />
-    </node>
-
-    <!-- scene database messages (MongoDB) -->
-    <param name="mongodb_host" type="str" value="$(arg mongodb_host)" />
-    <param name="mongodb_port" type="int" value="$(arg mongodb_port)" />
-    <node pkg="mongodb_store" type="message_store_node.py" name="message_store_node"
-          output="screen" />
-
 	<!-- knowledge base -->
 	<node pkg="rosplan_knowledge_base" type="knowledgeBase" name="rosplan_knowledge_base" respawn="false" output="screen">
 		<param name="domain_path" value="$(arg domain_path)" />
 		<param name="problem_path" value="$(arg problem_path)" />
+		<param name="use_unknowns" value="false" />
 	</node>
 
 	<!-- problem generation -->

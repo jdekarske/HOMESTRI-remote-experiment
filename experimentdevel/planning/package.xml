@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>ur5_e_planning</name>
+  <version>0.1.0</version>
+  <description>Domain and problems for the ur5_e experimental paradigm</description>
+  <license>MIT</license>
+
+  <author email="jdekarske@ucdavis.edu">Jason Dekarske</author>
+  <maintainer email="jdekarske@ucdavis.edu">Jason Dekarske</maintainer>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+</package>
