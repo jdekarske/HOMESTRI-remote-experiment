@@ -47,6 +47,13 @@
 	</node>
 
 	<!-- interface -->
-	<node name="ur5_e_planning_interface" pkg="ur5_e_planning" type="ur5_e_planning_interface.py" respawn="false" output="screen"/>
+	<node name="rosplan_interface_test" pkg="rosplan_interface_ur" type="RPur" respawn="false" output="screen">
+		<param name="knowledge_base"		value="rosplan_knowledge_base" />
+		<param name="pddl_action_name"		value="goto_waypoint" />
+		<param name="action_dispatch_topic" value="/rosplan_plan_dispatcher/action_dispatch" />
+		<param name="action_feedback_topic" value="/rosplan_plan_dispatcher/action_feedback" />
+	</node>
+
+	<!-- <node name="ur5_e_planning_interface" pkg="ur5_e_planning" type="ur5_e_planning_interface.py" respawn="false" output="screen"/> -->
 
 </launch>
