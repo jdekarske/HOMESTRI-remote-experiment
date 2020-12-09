@@ -1,7 +1,7 @@
  
 (define (domain ur5_e)
-  
-(:requirements :strips :typing :fluents :disjunctive-preconditions :durative-actions :negative-preconditions)
+;   negative preconditions not supported in rosplan
+(:requirements :strips :typing :fluents :durative-actions :negative-preconditions)
 
 (:types waypoint robot block - object
 	blockpos - waypoint)
