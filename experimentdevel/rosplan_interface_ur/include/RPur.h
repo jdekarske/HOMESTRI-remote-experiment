@@ -9,7 +9,6 @@
 #include "rosplan_dispatch_msgs/ActionFeedback.h"
 #include "rosplan_action_interface/RPActionInterface.h"
 
-
 // ROS
 #include <ros/console.h>
 
@@ -27,50 +26,31 @@
 #ifndef KCL_RPUR
 #define KCL_RPUR
 
-namespace KCL_rosplan {
+namespace KCL_rosplan
+{
 
-	class RPur: public RPActionInterface
+	class RPur : public RPActionInterface
 	{
 
 	private:
+		const float pick_height = 0.15;
+		const float place_height = 0.23;
+		const float approach_height = 0.3;
+		const float open_position = 0.0;
+		const float closed_position = 0.25;
+
+		moveit::planning_interface::MoveGroupInterface *manipulator_group;
+		moveit::planning_interface::MoveGroupInterface *gripper_group;
+
+		bool move(float x_des, float y_des, float z_des);
 
 	public:
-
 		/* constructor */
 		RPur(ros::NodeHandle &nh);
 
 		/* listen to and process action_dispatch topic */
-		bool concreteCallback(const rosplan_dispatch_msgs::ActionDispatch::ConstPtr& msg);
+		bool concreteCallback(const rosplan_dispatch_msgs::ActionDispatch::ConstPtr &msg);
 	};
-}
-
-// namespace KCL_rosplan
-// {
-
-//     class RPur
-//     {
-
-//     private:
-//         ros::ServiceClient update_knowledge_client;
-
-//         const float pick_height = 0.15;
-//         const float place_height = 0.23;
-//         const float approach_height = 0.3;
-//         const float open_position = 0.0;
-//         const float closed_position = 0.25;
-
-//         moveit::planning_interface::MoveGroupInterface manipulator_group;
-//         moveit::planning_interface::MoveGroupInterface gripper_group;
-
-//         bool move(float x_des, float y_des, float z_des);
-
-//     public:
-//         /* constructor */
-//         RPur(ros::NodeHandle &nh);
-
-//         /* listen to and process action_dispatch topic */
-//         void dispatchCallback(const rosplan_dispatch_msgs::ActionDispatch::ConstPtr &msg);
-//     };
-// } // namespace KCL_rosplan
+} // namespace KCL_rosplan
 
 #endif
