@@ -59,5 +59,6 @@ int main(int argc, char **argv)
 	KCL_rosplan::RPur rpti(nh);
 	rpti.runActionInterface();
 
+	ros::waitForShutdown();
 	return 0;
 }
