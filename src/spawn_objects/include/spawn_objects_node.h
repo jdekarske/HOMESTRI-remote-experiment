@@ -20,8 +20,9 @@ namespace ns_spawn_objects
         const float offset_height = 0.05; // don't spawn *in* the table
         const char *model_prefix = "cube_";
 
-        // A lot of help from https://github.com/JenniferBuehler/gazebo-pkgs/blob/master/gazebo_test_tools/src/cube_spawner.cpp!
+        ros::NodeHandle nh;
 
+        // A lot of help from https://github.com/JenniferBuehler/gazebo-pkgs/blob/master/gazebo_test_tools/src/cube_spawner.cpp!
         bool spawncube(float x, float y, float z, uint id, float red = -1, float green = -1, float blue = -1);
 
         // These come from gazebo in the from "cube_i", probably starting with i=0

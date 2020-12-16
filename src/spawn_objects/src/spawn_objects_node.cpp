@@ -2,7 +2,7 @@
 
 namespace ns_spawn_objects
 {
-    spawn_objects_node::spawn_objects_node(ros::NodeHandle &nh)
+    spawn_objects_node::spawn_objects_node(ros::NodeHandle &nodehandle):nh(nodehandle)
     {
         service = nh.advertiseService("spawn_objects_service", &ns_spawn_objects::spawn_objects_node::callback, this);
         ROS_INFO("spawn_objects server started.");
@@ -129,7 +129,6 @@ namespace ns_spawn_objects
 
     bool spawn_objects_node::callback(spawn_objects::spawn_objects::Request &request, spawn_objects::spawn_objects::Response &response)
     {
-        ROS_INFO("HERE");
         std::vector<std::string> cubes = findModelNames(model_prefix);
         int all_id = 0;
 
@@ -158,41 +157,45 @@ namespace ns_spawn_objects
             }
         }
 
-        // if (!true) //request.param_name.empty())
-        // {
-        //     // retrieve the positions
-        //     std::vector<std::string, double> input;
-        //     ros::NodeHandle.getParam(request.param_name, input)
-
-        //         // spawn cubes in the positions
-        //         for (size_t i = 0; i < request.length; i++)
-        //     {
-        //         status = spawncube(input[i]["x"], input[i]["y"], input[i]["z"], i) && status;
-        //     }
-        // }
-        // else
-        // {
-        // Spawn a clump of objects centered at the middle of the object (table for now)
-        // TODO: generalize this to any model in the scene, now it is hardcoded for the table
-        uint8_t width_objs = request.width;   // number of objects along the width (x)
-        uint8_t length_objs = request.length; // number of objects along the length (y)
-
-        float table_center[] = {0.2, -0.4}; // coords for the center of the table (x,y)
-        float table_height = 1.0;
-        float cube_separation = cube_size + 0.07; // defined from the middle of the cube
-
-        float objectset_dim[] = {cube_separation * (width_objs - 1), cube_separation * (length_objs - 1)};      //distance of the sides of the object set
-        float start_coord[] = {table_center[0] - objectset_dim[0] / 2, table_center[1] - objectset_dim[1] / 2}; //the coordinates of the first object
-
-        for (float x = start_coord[0]; x <= start_coord[0] + objectset_dim[0]; x = x + cube_separation)
+        // option A will load cube positions from a param file in the provided format
+        if (!request.param_name.empty())
         {
-            for (float y = start_coord[1]; y <= start_coord[1] + objectset_dim[1]; y = y + cube_separation)
+            // retrieve the positions
+            std::string param_root = request.param_name;
+            std::map<std::string, double> input;   // for coordinates
+            std::string stupidinputname = "/cube"; // I'm frustrated with the lack of templating in getparam api
+            int numblocks;
+
+            nh.getParam(param_root + "/num", numblocks); //param_name likely /blockpositions/inputs
+            // spawn cubes in the positions
+            for (size_t i = 1; i <= numblocks; i++) //index from one
             {
-                status = spawncube(x, y, table_height + offset_height, all_id) && status;
-                all_id++;
+                nh.getParam(param_root + stupidinputname + std::to_string(i), input);
+                status = spawncube(input["x"], input["y"], input["z"], i) && status;
             }
         }
-        // }
+        else // Option B will generate the number of cubes that you want in a grid
+        {
+            // Spawn a clump of objects centered at the middle of the object (table for now)
+            uint8_t width_objs = request.width;   // number of objects along the width (x)
+            uint8_t length_objs = request.length; // number of objects along the length (y)
+
+            float table_center[] = {0.2, -0.4}; // coords for the center of the table (x,y)
+            float table_height = 1.0;
+            float cube_separation = cube_size + 0.07; // defined from the middle of the cube
+
+            float objectset_dim[] = {cube_separation * (width_objs - 1), cube_separation * (length_objs - 1)};      //distance of the sides of the object set
+            float start_coord[] = {table_center[0] - objectset_dim[0] / 2, table_center[1] - objectset_dim[1] / 2}; //the coordinates of the first object
+
+            for (float x = start_coord[0]; x <= start_coord[0] + objectset_dim[0]; x = x + cube_separation)
+            {
+                for (float y = start_coord[1]; y <= start_coord[1] + objectset_dim[1]; y = y + cube_separation)
+                {
+                    status = spawncube(x, y, table_height + offset_height, all_id) && status;
+                    all_id++;
+                }
+            }
+        }
 
         response.status = status;
         return status;
