@@ -40,5 +40,5 @@ EXPOSE 9090
 
 CMD ["/bin/bash"]
 # ENTRYPOINT ["/bin/bash", "-c", "source /catkin_ws/docker-entrypoint.sh && roslaunch moveit_config demo.launch"]
-# run this from the git repo: $ 
+# run this from the git repo: $ ./gui-docker -it -p 9090:9090 -v $PWD/experimentdevel:/catkin_ws/src/experimentdevel jdekarske/homestri-remote-experiment:latest
 # ./gui-docker -it -p 9090:9090 -v $PWD/experimentdevel:/catkin_ws/src/experimentdevel --cap-add=SYS_PTRACE --security-opt seccomp=unconfined --security-opt apparmor=unconfined jdekarske/homestri-remote-experiment:latest
