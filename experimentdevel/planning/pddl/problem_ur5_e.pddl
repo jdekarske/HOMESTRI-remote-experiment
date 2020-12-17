@@ -3,27 +3,23 @@
 (:objects
     home input output - waypoint
     arm - robot
-    b1 b2 b3 b4 b5 b6 - block
-    bin1 bin2 bin3 bin4 bout1 bout2 bout3 bout4 - blockpos
+    c1 c2 c3 c4 - cube
+    cin1 cin2 cin3 cin4 cout1 cout2 cout3 cout4 - cubepos
 )
 (:init
     (not-holding arm)
     (not-moving arm)
     (robot_at arm home)
 
-    (block_at b1 bin1)
-    (block_at b2 bin2)
-    (block_at b3 bin3)
-    (block_at b4 bin4)
-    (block_at b5 bout1)
-    (block_at b6 bout2)
+    (cube_at c1 cin1)
+    (cube_at c2 cin2)
+    (cube_at c3 cin3)
+    (cube_at c4 cin4)
 )
 (:goal (and
-    (block_at b1 bout1)
-    (block_at b2 bout2)
-    (block_at b3 bout3)
-    (block_at b4 bout4)
-    (block_at b5 bin1)
-    (block_at b6 bin2)
+    (cube_at c1 cout1)
+    (cube_at c2 cout2)
+    (cube_at c3 cout3)
+    (cube_at c4 cout4)
 ))
 )

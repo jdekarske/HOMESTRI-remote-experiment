@@ -42,6 +42,7 @@ namespace KCL_rosplan
 		moveit::planning_interface::MoveGroupInterface *manipulator_group;
 		moveit::planning_interface::MoveGroupInterface *gripper_group;
 
+		std::map<std::string, double> getWaypointCoordinates(const rosplan_dispatch_msgs::ActionDispatch::ConstPtr& msg);
 		bool move(float x_des, float y_des, float z_des);
 
 	public:

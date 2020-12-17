@@ -20,8 +20,48 @@ namespace KCL_rosplan
 	bool RPur::concreteCallback(const rosplan_dispatch_msgs::ActionDispatch::ConstPtr &msg)
 	{
 		// complete the action (test)
-		ROS_INFO("KCL: (%s) TUTORIAL Action completing.", msg->name.c_str());
-		return move(0.25, -0.29, 0.20);
+		ROS_INFO("KCL: (%s) TUTORIAL Action starting.", msg->name.c_str());
+
+		std::map<std::string, double> coords = getWaypointCoordinates(msg);
+
+		return move(coords["x"], coords["y"], coords["z"]);
+	}
+
+	std::map<std::string, double> RPur::getWaypointCoordinates(const rosplan_dispatch_msgs::ActionDispatch::ConstPtr &msg)
+	{
+		// msg->parameters is probably:
+		// v-arm
+		// from - home
+		// to - cin1
+		std::map<std::string, double> coords; // for coordinates
+		std::string param_root = "/blockpositions";
+		std::string stupidinputname = "/cube"; // I'm frustrated with the lack of templating in getparam api
+
+		for (const auto &arg : msg->parameters)
+		{
+			if (arg.key == "to")
+			{
+				if (arg.value.find("in") != std::string::npos)
+				{
+					// input waypoint
+					ROS_DEBUG("Rosplan interface moving to input");
+					param_root.append("/inputs");
+				}
+				else if (arg.value.find("out") != std::string::npos)
+				{
+					// output waypoint
+					ROS_DEBUG("Rosplan interface moving to output");
+					param_root.append("/outputs");
+				}
+				else
+				{
+					break;
+				}
+				ros::param::get(param_root + stupidinputname + arg.value.back(), coords);
+			}
+		}
+
+		return coords;
 	}
 
 	bool RPur::move(float x_des, float y_des, float z_des)
