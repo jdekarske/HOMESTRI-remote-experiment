@@ -3,13 +3,13 @@
 ;   negative preconditions not supported in rosplan
 (:requirements :strips :typing :fluents :durative-actions :negative-preconditions)
 
-(:types waypoint robot block - object
-	blockpos - waypoint)
+(:types waypoint robot cube - object
+	cubepos - waypoint)
   
 (:predicates
     (robot_at ?v - robot ?wp - waypoint)
-	(block_at ?bl - block ?bp - blockpos)
-	(holding_block ?v - robot ?b - block)
+	(cube_at ?cu - cube ?cp - cubepos)
+	(holding_cube ?v - robot ?c - cube)
 	(holding ?v - robot)
 	(not-holding ?v - robot)
 	(moving ?v - robot)
@@ -34,34 +34,34 @@
 )
 
 (:durative-action pickup
-	:parameters (?v - robot ?bl - block ?bp - blockpos)
+	:parameters (?v - robot ?cu - cube ?cp - cubepos)
 	:duration ( = ?duration 5)
 	:condition (and 
-		(at start (robot_at ?v ?bp))
-		(at start (block_at ?bl ?bp))
+		(at start (robot_at ?v ?cp))
+		(at start (cube_at ?cu ?cp))
 		(at start (not-holding ?v))
 		)
 	:effect (and
 		(at end (holding ?v))
 		(at end (not (not-holding ?v)))
-		(at end (holding_block ?v ?bl))
+		(at end (holding_cube ?v ?cu))
 		)
 )
 
 (:durative-action drop
-	:parameters (?v - robot ?bl - block ?bp - blockpos)
+	:parameters (?v - robot ?cu - cube ?cp - cubepos)
 	:duration ( = ?duration 5)
 	:condition (and 
-		(at start (robot_at ?v ?bp))
+		(at start (robot_at ?v ?cp))
 		(at start (holding ?v))
-		(at start (holding_block ?v ?bl))
+		(at start (holding_cube ?v ?cu))
 		; add a can_move over all here
 		)
 	:effect (and
 		(at end (not (holding ?v)))
 		(at end (not-holding ?v))
-		(at end (not (holding_block ?v ?bl)))
-		(at end (block_at ?bl ?bp))
+		(at end (not (holding_cube ?v ?cu)))
+		(at end (cube_at ?cu ?cp))
 		)
 )
 )
