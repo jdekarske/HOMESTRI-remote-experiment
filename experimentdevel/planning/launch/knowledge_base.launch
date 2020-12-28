@@ -54,6 +54,4 @@
 		<param name="action_feedback_topic" value="/rosplan_plan_dispatcher/action_feedback" />
 	</node>
 
-	<!-- <node name="ur5_e_planning_interface" pkg="ur5_e_planning" type="ur5_e_planning_interface.py" respawn="false" output="screen"/> -->
-
 </launch>
