@@ -166,12 +166,19 @@ namespace ns_spawn_objects
             std::string stupidinputname = "/cube"; // I'm frustrated with the lack of templating in getparam api
             int numblocks;
 
-            nh.getParam(param_root + "/num", numblocks); //param_name likely /blockpositions/inputs
-            // spawn cubes in the positions
-            for (size_t i = 1; i <= numblocks; i++) //index from one
+            if (nh.getParam(param_root + "/num", numblocks)) //param_name likely /blockpositions/inputs
             {
-                nh.getParam(param_root + stupidinputname + std::to_string(i), input);
-                status = spawncube(input["x"], input["y"], input["z"], i) && status;
+                // spawn cubes in the positions
+                for (size_t i = 1; i <= numblocks; i++) //index from one
+                {
+                    nh.getParam(param_root + stupidinputname + std::to_string(i), input);
+                    status = spawncube(input["x"], input["y"], input["z"], i) && status;
+                }
+            }
+            else
+            {
+                ROS_WARN("spawn position param not found.");
+                status = false;
             }
         }
         else // Option B will generate the number of cubes that you want in a grid
