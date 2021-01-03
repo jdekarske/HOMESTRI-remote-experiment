@@ -1,29 +1,33 @@
-// ROS
-#include <ros/ros.h>
-#include <ros/console.h>
+#include "target_pose_node.h"
 
-// MoveIt
-#include <moveit/planning_scene_interface/planning_scene_interface.h>
-#include <moveit/move_group_interface/move_group_interface.h>
+target_pose_node::target_pose_node(ros::NodeHandle &nodehandle) : nh(nodehandle)
+{
+  manipulator_group = new moveit::planning_interface::MoveGroupInterface("manipulator");
+  gripper_group = new moveit::planning_interface::MoveGroupInterface("gripper");
+}
 
-// Position
-#include "geometry_msgs/Pose.h"
-#include "geometry_msgs/Point.h"
+target_pose_node::~target_pose_node()
+{
+  delete manipulator_group;
+  delete gripper_group;
+}
 
-// Msg
-#include <targetpose/pickplace.h>
-#include <gazebo_msgs/GetModelState.h>
+void target_pose_node::startService()
+{
+  service = nh.advertiseService("pick_place", &target_pose_node::pickplaceCallback, this);
+  ROS_INFO("pick_place server started.");
+}
 
-const float pick_height = 0.15;
-const float place_height = 0.23;
-const float approach_height = 0.3;
-const float open_position = 0.0;
-const float closed_position = 0.25;
+void target_pose_node::initPosition()
+{
+  manipulator_group->setNamedTarget("vertical");
+  manipulator_group->move();
 
-moveit::planning_interface::MoveGroupInterface *manipulator_group;
-moveit::planning_interface::MoveGroupInterface *gripper_group;
+  moveGripper(open_position);
+  ROS_INFO("Arm initial postion");
+}
 
-bool moveGripper(double pos)
+bool target_pose_node::moveGripper(float pos)
 {
   gripper_group->setJointValueTarget("gripper_finger1_joint", pos);
   bool success = (gripper_group->move() == moveit::planning_interface::MoveItErrorCode::SUCCESS);
@@ -31,7 +35,19 @@ bool moveGripper(double pos)
   return success;
 }
 
-bool move(float x_des, float y_des, float z_des)
+bool target_pose_node::moveGripper(Gripper pos)
+{
+  if (pos == OPEN)
+  {
+    moveGripper(open_position);
+  }
+  else if (pos == CLOSE)
+  {
+    moveGripper(closed_position);
+  }
+}
+
+bool target_pose_node::move(float x_des, float y_des, float z_des)
 {
   geometry_msgs::Pose target_pose1;
   target_pose1.orientation.x = 0.707;
@@ -47,14 +63,14 @@ bool move(float x_des, float y_des, float z_des)
   return success;
 }
 
-bool pick(float objx, float objy, float objz)
+bool target_pose_node::pick(float objx, float objy, float objz)
 {
 
   bool success = true && move(objx, objy, objz + approach_height) && moveGripper(open_position) && move(objx, objy, objz + pick_height) && moveGripper(closed_position) && move(objx, objy, objz + approach_height);
   return success;
 }
 
-bool pick(std::string object_name)
+bool target_pose_node::pick(std::string object_name)
 {
   gazebo_msgs::GetModelState model;
   model.request.model_name = object_name;
@@ -72,13 +88,13 @@ bool pick(std::string object_name)
   }
 }
 
-bool place(float objx, float objy, float objz)
+bool target_pose_node::place(float objx, float objy, float objz)
 {
   bool success = true && move(objx, objy, objz + approach_height) && move(objx, objy, objz + place_height) && moveGripper(open_position) && move(objx, objy, objz + approach_height);
   return true;
 }
 
-bool place(std::string object_name)
+bool target_pose_node::place(std::string object_name)
 {
   gazebo_msgs::GetModelState model;
   model.request.model_name = object_name;
@@ -96,7 +112,7 @@ bool place(std::string object_name)
   }
 }
 
-bool pickplaceCallback(targetpose::pickplace::Request &req, targetpose::pickplace::Response &res)
+bool target_pose_node::pickplaceCallback(target_pose::pickplace::Request &req, target_pose::pickplace::Response &res)
 {
   res.status = pick(req.pick_object) && place(req.place_object); // this is poetic
   return res.status;
@@ -106,23 +122,13 @@ int main(int argc, char **argv)
 {
   ros::init(argc, argv, "UR5e_pick_place");
   ros::NodeHandle nh;
-  ros::ServiceServer service = nh.advertiseService("pick_place", pickplaceCallback);
 
   ros::AsyncSpinner spinner(2);
   spinner.start();
 
-  manipulator_group = new moveit::planning_interface::MoveGroupInterface("manipulator");
-  gripper_group = new moveit::planning_interface::MoveGroupInterface("gripper");
-  
-  ros::Duration(2).sleep();
-  manipulator_group->setNamedTarget("vertical");
-  manipulator_group->move();
-
-  // manipulator_group->setPlanningTime(45.0); // Not sure why this was here
-
-  // (tests)
-  // pick(0.7, 0);
-  // place(0, 0.7);
+  target_pose_node tp(nh);
+  tp.initPosition();
+  tp.startService();
 
   ros::waitForShutdown();
   return 0;

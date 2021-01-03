@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0.2)
-project(targetpose)
+project(target_pose)
 
 ## Find catkin macros and libraries, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
@@ -30,8 +30,8 @@ generate_messages(
 
 
 catkin_package(
-  LIBRARIES
-  INCLUDE_DIRS
+  LIBRARIES target_pose
+  INCLUDE_DIRS include
   CATKIN_DEPENDS
     message_runtime 
     roscpp
@@ -45,13 +45,13 @@ catkin_package(
     interactive_markers
 )
 
-include_directories(${catkin_INCLUDE_DIRS})
+include_directories(include ${catkin_INCLUDE_DIRS})
 
 ## Declare a C++ executable, the .cpp is what the executable program need
-add_executable(targetpose src/targetpose.cpp)
+add_executable(${PROJECT_NAME}_node src/${PROJECT_NAME}_node.cpp)
 
 ## Specify libraries to link a library or executable target against
-target_link_libraries(targetpose ${catkin_LIBRARIES})
+target_link_libraries(${PROJECT_NAME}_node ${catkin_LIBRARIES})
 
 ## Add cmake target dependencies of the executable, keep the program after the target will be built first
-add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
