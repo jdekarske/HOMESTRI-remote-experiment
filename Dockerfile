@@ -25,7 +25,7 @@ RUN apt-get update -qq && apt-get install -y \
 ##########################################
 
 COPY src/experiment_world /catkin_ws/src/experiment_world
-COPY src/targetpose /catkin_ws/src/targetpose
+COPY src/target_pose /catkin_ws/src/target_pose
 COPY src/spawn_objects /catkin_ws/src/spawn_objects
 
 # Get everything going

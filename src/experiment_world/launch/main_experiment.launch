@@ -87,6 +87,6 @@
   </include>
 
   <!-- the node to move the cubes around! -->
-  <node name="picking" pkg="targetpose" type="targetpose" respawn="true" output="screen" />
+  <node name="picking" pkg="target_pose" type="target_pose_node" respawn="true" output="screen" />
 
 </launch>

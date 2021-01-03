@@ -2,7 +2,7 @@
 <package format="2">
   <name>target_pose</name>
   <version>0.1.0</version>
-  <description>The targetpose package</description>
+  <description>The target pose package for telling the arm to move and operate the gripper</description>
   <license>MIT</license>
 
   <author email="jdekarske@ucdavis.edu">Jason Dekarske</author>
