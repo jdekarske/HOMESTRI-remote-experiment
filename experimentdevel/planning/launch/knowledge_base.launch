@@ -47,7 +47,7 @@
 	</node>
 
 	<!-- interface -->
-	<node name="rosplan_interface_test" pkg="rosplan_interface_ur" type="RPur" respawn="false" output="screen">
+	<node name="rosplan_interface_test" pkg="rosplan_interface_ur" type="RPGoto" respawn="false" output="screen">
 		<param name="knowledge_base"		value="rosplan_knowledge_base" />
 		<param name="pddl_action_name"		value="goto_waypoint" />
 		<param name="action_dispatch_topic" value="/rosplan_plan_dispatcher/action_dispatch" />
