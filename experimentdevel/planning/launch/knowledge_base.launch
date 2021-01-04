@@ -46,10 +46,24 @@
 		<param name="action_feedback_topic" value="action_feedback" />
 	</node>
 
-	<!-- interface -->
-	<node name="rosplan_interface_test" pkg="rosplan_interface_ur" type="RPGoto" respawn="false" output="screen">
+	<!-- interfaces -->
+	<node name="rosplan_interface_goto" pkg="rosplan_interface_ur" type="RPGoto" respawn="false" output="screen">
 		<param name="knowledge_base"		value="rosplan_knowledge_base" />
 		<param name="pddl_action_name"		value="goto_waypoint" />
+		<param name="action_dispatch_topic" value="/rosplan_plan_dispatcher/action_dispatch" />
+		<param name="action_feedback_topic" value="/rosplan_plan_dispatcher/action_feedback" />
+	</node>
+
+	<node name="rosplan_interface_pickup" pkg="rosplan_interface_ur" type="RPPickup" respawn="false" output="screen">
+		<param name="knowledge_base"		value="rosplan_knowledge_base" />
+		<param name="pddl_action_name"		value="pickup" />
+		<param name="action_dispatch_topic" value="/rosplan_plan_dispatcher/action_dispatch" />
+		<param name="action_feedback_topic" value="/rosplan_plan_dispatcher/action_feedback" />
+	</node>
+
+	<node name="rosplan_interface_drop" pkg="rosplan_interface_ur" type="RPDrop" respawn="false" output="screen">
+		<param name="knowledge_base"		value="rosplan_knowledge_base" />
+		<param name="pddl_action_name"		value="drop" />
 		<param name="action_dispatch_topic" value="/rosplan_plan_dispatcher/action_dispatch" />
 		<param name="action_feedback_topic" value="/rosplan_plan_dispatcher/action_feedback" />
 	</node>
