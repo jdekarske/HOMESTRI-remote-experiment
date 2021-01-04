@@ -4,12 +4,14 @@ target_pose_node::target_pose_node()
 {
   manipulator_group = new moveit::planning_interface::MoveGroupInterface("manipulator");
   gripper_group = new moveit::planning_interface::MoveGroupInterface("gripper");
+  manipulator_group->setPoseReferenceFrame("world"); // this is automatically the
 }
 
 target_pose_node::target_pose_node(ros::NodeHandle &nodehandle) : nh(nodehandle)
 {
   manipulator_group = new moveit::planning_interface::MoveGroupInterface("manipulator");
   gripper_group = new moveit::planning_interface::MoveGroupInterface("gripper");
+  // manipulator_group->setPoseReferenceFrame("world"); // this is automatically the robot base
 
   service = nh.advertiseService("pick_place", &target_pose_node::pickplaceCallback, this);
   ROS_INFO("pick_place server started.");
