@@ -54,6 +54,9 @@ include_directories(include ${catkin_INCLUDE_DIRS})
 ## Declare a C++ executable, the .cpp is what the executable program need
 add_executable(${PROJECT_NAME}_node src/${PROJECT_NAME}_node.cpp)
 
+## Add cmake target dependencies of the executable, keep the program after the target will be built first
+add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+
 ## Specify libraries to link a library or executable target against
 target_link_libraries(${PROJECT_NAME}_node ${catkin_LIBRARIES})
 
