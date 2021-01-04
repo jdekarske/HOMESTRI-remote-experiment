@@ -32,11 +32,11 @@ private:
     moveit::planning_interface::MoveGroupInterface *gripper_group;
 
 public:
+    target_pose_node();
     target_pose_node(ros::NodeHandle &nodehandle);
     ~target_pose_node();
 
-    // call this if you want to use the pickplace interface
-    void startService();
+    // move to the assigned position which is above the table
     void initPosition();
 
     enum Gripper

@@ -1,21 +1,24 @@
-#include "target_pose_node.h"
+#include <target_pose/target_pose_node.h>
+
+target_pose_node::target_pose_node()
+{
+  manipulator_group = new moveit::planning_interface::MoveGroupInterface("manipulator");
+  gripper_group = new moveit::planning_interface::MoveGroupInterface("gripper");
+}
 
 target_pose_node::target_pose_node(ros::NodeHandle &nodehandle) : nh(nodehandle)
 {
   manipulator_group = new moveit::planning_interface::MoveGroupInterface("manipulator");
   gripper_group = new moveit::planning_interface::MoveGroupInterface("gripper");
+
+  service = nh.advertiseService("pick_place", &target_pose_node::pickplaceCallback, this);
+  ROS_INFO("pick_place server started.");
 }
 
 target_pose_node::~target_pose_node()
 {
   delete manipulator_group;
   delete gripper_group;
-}
-
-void target_pose_node::startService()
-{
-  service = nh.advertiseService("pick_place", &target_pose_node::pickplaceCallback, this);
-  ROS_INFO("pick_place server started.");
 }
 
 void target_pose_node::initPosition()
@@ -128,7 +131,6 @@ int main(int argc, char **argv)
 
   target_pose_node tp(nh);
   tp.initPosition();
-  tp.startService();
 
   ros::waitForShutdown();
   return 0;
