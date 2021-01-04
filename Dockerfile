@@ -24,9 +24,7 @@ RUN apt-get update -qq && apt-get install -y \
 
 ##########################################
 
-COPY src/experiment_world /catkin_ws/src/experiment_world
-COPY src/target_pose /catkin_ws/src/target_pose
-COPY src/spawn_objects /catkin_ws/src/spawn_objects
+COPY src/ src/
 
 # Get everything going
 RUN source /opt/ros/$ROS_DISTRO/setup.bash \
