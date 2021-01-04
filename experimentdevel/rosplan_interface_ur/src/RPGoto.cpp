@@ -12,12 +12,12 @@ namespace KCL_rosplan
 	/* action dispatch callback */
 	bool RPGoto::concreteCallback(const rosplan_dispatch_msgs::ActionDispatch::ConstPtr &msg)
 	{
-		// complete the action (test)
-		ROS_INFO("KCL: (%s) TUTORIAL Action starting.", msg->name.c_str());
+		// complete the action
+		ROS_INFO("KCL: (%s) Action starting.", msg->name.c_str());
 
-		// std::map<std::string, double> coords = getWaypointCoordinates(msg);
+		std::map<std::string, double> coords = getWaypointCoordinates(msg);
 
-		return tp->move(coords["x"], coords["y"], coords["z"]);
+		return (tp->move(coords["x"], coords["y"], coords["z"] - 1.03 + 0.3) && tp->move(coords["x"], coords["y"], coords["z"] - 1.03 + 0.15)); // z axis adjustment from here /catkin_ws/src/experiment_world/launch/spawn_robot.launch I don't think `setPoseRefenceFrame()` is working
 	}
 
 	std::map<std::string, double> RPGoto::getWaypointCoordinates(const rosplan_dispatch_msgs::ActionDispatch::ConstPtr &msg)
@@ -27,7 +27,7 @@ namespace KCL_rosplan
 		// from - home
 		// to - cin1
 		std::map<std::string, double> coords; // for coordinates
-		std::string param_root = "/blockpositions";
+		std::string param_root = "/block_positions";
 		std::string stupidinputname = "/cube"; // I'm frustrated with the lack of templating in getparam api
 
 		for (const auto &arg : msg->parameters)
@@ -50,7 +50,11 @@ namespace KCL_rosplan
 				{
 					break;
 				}
-				ros::param::get(param_root + stupidinputname + arg.value.back(), coords);
+				// ROS_INFO("%s", (param_root + stupidinputname + arg.value.back()).c_str());
+				if (!ros::param::get(param_root + stupidinputname + arg.value.back(), coords))
+				{
+					ROS_WARN("[RPGOTO] incorrect cube position param");
+				}
 			}
 		}
 
