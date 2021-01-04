@@ -11,47 +11,10 @@
   <buildtool_depend>catkin</buildtool_depend>
 
   <build_depend>roscpp</build_depend>
-  <build_depend>gazebo</build_depend>
-  <build_depend>gazebo_ros</build_depend>
-  <build_depend>gazebo_msgs</build_depend>
-  <build_depend>std_msgs</build_depend>
-  <build_depend>geometry_msgs</build_depend>
-  <build_depend>message_generation</build_depend> 
-  <build_depend>moveit_core</build_depend>
-  <build_depend>moveit_ros_planning</build_depend>
-  <build_depend>moveit_ros_planning_interface</build_depend>
-  <build_depend>moveit_ros_perception</build_depend>
-  <build_depend>interactive_markers</build_depend>
-  <build_depend>moveit_visual_tools</build_depend>
-  <build_depend>rviz_visual_tools</build_depend>
-
-  <exec_depend>roscpp</exec_depend>
-  <exec_depend>gazebo</exec_depend>
-  <exec_depend>gazebo_ros</exec_depend>
-  <exec_depend>gazebo_msgs</exec_depend>
-  <exec_depend>geometry_msgs</exec_depend>
-  <exec_depend>std_msgs</exec_depend>
-  <exec_depend>message_runtime</exec_depend> 
-
-  <exec_depend>moveit_core</exec_depend>
-  <exec_depend>moveit_commander</exec_depend>
-  <exec_depend>moveit_fake_controller_manager</exec_depend>
-  <exec_depend>moveit_ros_planning_interface</exec_depend>
-  <exec_depend>moveit_ros_perception</exec_depend>
-  <exec_depend>interactive_markers</exec_depend>
-  <exec_depend>moveit_visual_tools</exec_depend>
-  <exec_depend>rviz_visual_tools</exec_depend>
-
-  <build_depend>std_srvs</build_depend>
-  <build_depend>diagnostic_msgs</build_depend>
-  <build_depend>rosplan_dispatch_msgs</build_depend>
-  <build_depend>rosplan_knowledge_msgs</build_depend>
+  <build_depend>target_pose</build_depend>
   <build_depend>rosplan_planning_system</build_depend>
 
-  <exec_depend>std_srvs</exec_depend>
-  <exec_depend>diagnostic_msgs</exec_depend>
-  <exec_depend>rosplan_dispatch_msgs</exec_depend>
-  <exec_depend>rosplan_knowledge_msgs</exec_depend>
+  <exec_depend>roscpp</exec_depend>
+  <exec_depend>target_pose</exec_depend>
   <exec_depend>rosplan_planning_system</exec_depend>
-
 </package>
