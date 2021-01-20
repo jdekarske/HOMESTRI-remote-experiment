@@ -325,11 +325,11 @@ Visualization Manager:
       Velocity_Scaling_Factor: 1
     - Class: rviz/Image
       Enabled: true
-      Image Topic: /camera/remote_camera/image_raw
+      Image Topic: /camera/remote_camera_rack/image_raw
       Max Value: 1
       Median window: 5
       Min Value: 0
-      Name: Image
+      Name: Rack Camera
       Normalize Range: true
       Queue Size: 2
       Transport Hint: raw
