@@ -24,7 +24,7 @@
   <!-- launch the gazebo simulator and spawn the robot -->
   <!-- startup simulated world -->
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
-    <arg name="world_name" default="$(find astrobee_iss)/world/ISS.world"/>
+    <arg name="world_name" default="$(find experiment_world)/world/ISS.world"/>
     <arg name="paused" value="$(arg paused)"/>
     <arg name="gui" value="$(arg gazebo_gui)"/>
   </include>
