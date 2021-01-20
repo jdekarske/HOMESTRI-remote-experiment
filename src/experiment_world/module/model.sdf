@@ -16,7 +16,7 @@
         <visual name='visual'>
           <geometry>
             <mesh>
-              <uri>$(find experiment_world)/module/meshes/module_dec.dae</uri>
+              <uri>model://experiment_world/module/meshes/module_dec.dae</uri>
             </mesh>
           </geometry>
         </visual>

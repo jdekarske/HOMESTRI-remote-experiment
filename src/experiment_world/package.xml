@@ -15,11 +15,11 @@
   <!-- The *depend tags are used to specify dependencies -->
   <!-- Dependencies can be catkin packages or system dependencies -->
   <depend>gazebo_ros</depend>>
+  <run_depend>gazebo_ros</run_depend>
   <buildtool_depend>catkin</buildtool_depend>
 
-
-  <!-- The export tag contains other, unspecified, tags -->
   <export>
-    <!-- <gazebo_ros plugin_path="${prefix}/../../lib" gazebo_media_path="${prefix}" /> -->
+    <gazebo_ros 
+    gazebo_model_path="${prefix}/.." />
   </export>
 </package>
