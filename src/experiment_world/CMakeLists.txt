@@ -8,6 +8,6 @@ find_package(catkin REQUIRED COMPONENTS
 find_package(gazebo REQUIRED)
 
 catkin_package(
-  DEPENDS
+  CATKIN_DEPENDS
     gazebo_ros
 )

@@ -12,11 +12,9 @@
   <url type="website">https://homestri.ucdavis.edu/</url>
   <url type="repo">https://github.com/jdekarske/HOMESTRI-remote-experiment</url>
 
-  <!-- The *depend tags are used to specify dependencies -->
-  <!-- Dependencies can be catkin packages or system dependencies -->
-  <depend>gazebo_ros</depend>>
-  <run_depend>gazebo_ros</run_depend>
   <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>gazebo_ros</build_depend>
+  <exec_depend>gazebo_ros</exec_depend>
 
   <export>
     <gazebo_ros 
