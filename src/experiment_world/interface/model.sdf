@@ -7,9 +7,9 @@
 
         <collision name='collision'>
           <geometry>
-            <box>
-              <size>.5 .5 2</size>
-            </box>
+            <mesh>
+              <uri>model://experiment_world/interface/meshes/interface_dec.dae</uri>
+            </mesh>
           </geometry>
         </collision>
 
