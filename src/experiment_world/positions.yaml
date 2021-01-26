@@ -1,17 +1,17 @@
 block_positions:
   inputs:
     num: 4 #its a pain in the ass to parse this in cpp, so here
-    cube1: { x: 0.45, y: -0.25, z: 1.047 }
-    cube2: { x: 0.45, y: -0.38, z: 1.047 }
-    cube3: { x: 0.45, y: -0.52, z: 1.047 }
-    cube4: { x: 0.45, y: -0.65, z: 1.047 }
+    cube1: { x: 1.23, y: 0.86, z: -0.34 }
+    cube2: { x: 1.36, y: 0.86, z: -0.34 }
+    cube3: { x: 1.23, y: 0.73, z: -0.34 }
+    cube4: { x: 1.36, y: 0.73, z: -0.34 }
   outputs:
     num: 4
-    cube1: { x: 0, y: -0.25, z: 1.047 }
-    cube2: { x: 0, y: -0.38, z: 1.047 }
-    cube3: { x: 0, y: -0.52, z: 1.047 }
-    cube4: { x: 0, y: -0.65, z: 1.047 }
+    cube1: { x: 1.82, y: 1.1, z: 0.18 }
+    cube2: { x: 1.94, y: 1.1, z: 0.18 }
+    cube3: { x: 2.06, y: 1.1, z: 0.18 }
+    cube4: { x: 2.18, y: 1.1, z: 0.18 }
 
 waypoints:
-  input: { x: 0.3, y: -0.45, z: 1.15 }
-  output: { x: 0.15, y: -0.45, z: 1.15 }
+  input: { x: 1.3, y: 0.8, z: -0.1 }
+  output: { x: 2, y: 0.8, z: 0.18 }
