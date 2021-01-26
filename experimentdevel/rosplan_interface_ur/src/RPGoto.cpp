@@ -27,7 +27,7 @@ namespace KCL_rosplan
 		// from - home
 		// to - cin1
 		std::map<std::string, double> coords; // for coordinates
-		std::string param_root = "/block_positions";
+		std::string param_root = "/cube_positions";
 		std::string stupidinputname = "/cube"; // I'm frustrated with the lack of templating in getparam api
 
 		for (const auto &arg : msg->parameters)

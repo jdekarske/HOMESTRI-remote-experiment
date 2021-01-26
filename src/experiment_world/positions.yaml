@@ -1,4 +1,4 @@
-block_positions:
+cube_positions:
   inputs:
     num: 4 #its a pain in the ass to parse this in cpp, so here
     cube1: { x: 1.23, y: 0.86, z: -0.34 }

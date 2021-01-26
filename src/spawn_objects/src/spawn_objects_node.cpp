@@ -164,12 +164,12 @@ namespace ns_spawn_objects
             std::string param_root = request.param_name;
             std::map<std::string, double> input;   // for coordinates
             std::string stupidinputname = "/cube"; // I'm frustrated with the lack of templating in getparam api
-            int numblocks;
+            int numcubes;
 
-            if (nh.getParam(param_root + "/num", numblocks)) //param_name likely /blockpositions/inputs
+            if (nh.getParam(param_root + "/num", numcubes)) //param_name likely /cubepositions/inputs
             {
                 // spawn cubes in the positions
-                for (size_t i = 1; i <= numblocks; i++) //index from one
+                for (size_t i = 1; i <= numcubes; i++) //index from one
                 {
                     nh.getParam(param_root + stupidinputname + std::to_string(i), input);
                     status = spawncube(input["x"], input["y"], input["z"], i) && status;
