@@ -48,21 +48,13 @@
   <node pkg="image_transport" type="republish" name="republish_camera_rack" output="screen" args="raw in:=/camera/remote_camera_rack/image_raw compressed out:=/camera/remote_camera_rack"/>
 
   <!-- send robot urdf to param server -->
-  <param name="my_robot_description" command="$(find xacro)/xacro $(arg urdf_path) xyz:='1.3 1.0 0.45' rpy:='1.5708 0.0 0.0'" />
+  <param name="robot_description" command="$(find xacro)/xacro $(arg urdf_path) xyz:='1.3 1.0 0.45' rpy:='1.5708 0.0 0.0'" />
 
   <!-- push robot_description to factory and spawn robot in gazebo at the origin, change x,y,z arguments to spawn in a different position -->
-  <node name="spawn_gazebo_model" pkg="gazebo_ros" type="spawn_model" args="-urdf -param my_robot_description -model robot"
+  <node name="spawn_gazebo_model" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robot_description -model robot"
     respawn="false" output="screen" />
 
   <include file="$(find moveit_config)/launch/ros_controllers.launch"/>
-
-  <!-- Load the URDF, SRDF and other .yaml configuration files on the param server -->
-  <include file="$(find moveit_config)/launch/planning_context.launch">
-    <arg name="load_robot_description" value="false"/>
-  </include>
-
-  <!-- If needed, broadcast static tf for robot root -->
-  
 
   <!-- We do not have a robot connected, so publish fake joint states -->
   <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
@@ -76,8 +68,9 @@
   <!-- Remap follow_joint_trajectory -->
   <remap from="/follow_joint_trajectory" to="/arm_controller/follow_joint_trajectory"/>
 
-  <!-- Run the main MoveIt! executable without trajectory execution (we do not have controllers configured by default) -->
+  <!-- Run the main MoveIt! -->
   <include file="$(find moveit_config)/launch/move_group.launch">
+    <arg name="load_robot_description" default="false" />
     <arg name="allow_trajectory_execution" value="true"/>
     <arg name="fake_execution" value="false"/>
     <arg name="info" value="true"/>
