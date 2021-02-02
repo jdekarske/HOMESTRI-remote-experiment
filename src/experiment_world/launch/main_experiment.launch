@@ -48,10 +48,10 @@
   <node pkg="image_transport" type="republish" name="republish_camera_rack" output="screen" args="raw in:=/camera/remote_camera_rack/image_raw compressed out:=/camera/remote_camera_rack"/>
 
   <!-- send robot urdf to param server -->
-  <param name="robot_description" textfile="$(arg urdf_path)" />
+  <param name="my_robot_description" command="$(find xacro)/xacro $(arg urdf_path) xyz:='1.3 1.0 0.45' rpy:='1.5708 0.0 0.0'" />
 
   <!-- push robot_description to factory and spawn robot in gazebo at the origin, change x,y,z arguments to spawn in a different position -->
-  <node name="spawn_gazebo_model" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robot_description -model robot -x 1.3 -y 1.0 -z 0.45 -R 1.5708 -P 0.0 -Y 0.0"
+  <node name="spawn_gazebo_model" pkg="gazebo_ros" type="spawn_model" args="-urdf -param my_robot_description -model robot"
     respawn="false" output="screen" />
 
   <include file="$(find moveit_config)/launch/ros_controllers.launch"/>
