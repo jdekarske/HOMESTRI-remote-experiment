@@ -50,6 +50,11 @@
   <!-- send robot urdf to param server -->
   <param name="robot_description" command="$(find xacro)/xacro $(arg urdf_path) xyz:='1.4 1.0 0.2' rpy:='1.5708 0.0 0.0'" />
 
+  <!-- Load updated joint limits (override information from URDF) -->
+  <group ns="robot_description_planning">
+    <rosparam command="load" file="$(find experiment_world)/joint_limits.yaml"/>
+  </group>
+
   <!-- push robot_description to factory and spawn robot in gazebo at the origin, change x,y,z arguments to spawn in a different position -->
   <node name="spawn_gazebo_model" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robot_description -model robot"
     respawn="false" output="screen" />
