@@ -48,7 +48,7 @@
   <node pkg="image_transport" type="republish" name="republish_camera_rack" output="screen" args="raw in:=/camera/remote_camera_rack/image_raw compressed out:=/camera/remote_camera_rack"/>
 
   <!-- send robot urdf to param server -->
-  <param name="robot_description" command="$(find xacro)/xacro $(arg urdf_path) xyz:='1.4 1.0 0.2' rpy:='1.5708 0.0 0.0'" />
+  <param name="robot_description" command="$(find xacro)/xacro $(arg urdf_path) xyz:='1.39 1.0 0.2' rpy:='1.5708 0.0 0.0'" />
 
   <!-- Load updated joint limits (override information from URDF) -->
   <group ns="robot_description_planning">
