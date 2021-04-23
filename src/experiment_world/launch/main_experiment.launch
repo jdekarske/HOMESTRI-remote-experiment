@@ -2,7 +2,7 @@
 
   <!-- By default, we are not in debug mode -->
   <arg name="debug" default="false" />
-  <arg name="cube_positions_file" default="/catkin_ws/src/experiment_world/positions.yaml" />
+  <arg name="cube_positions_file" default="$(find experiment_world)/positions.yaml" />
 
   <!--
   By default, hide joint_state_publisher's GUI

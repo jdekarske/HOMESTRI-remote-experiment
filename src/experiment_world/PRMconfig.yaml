@@ -5,6 +5,8 @@ planner_configs:
       store_planner_data: true
       load_planner_data: false
       planner_data_path: /tmp/roadmap.graph
+
+
   SBL:
     type: geometric::SBL
     range: 0.0  # Max motion added to tree. ==> maxDistance_ default: 0.0, if 0.0, set on setup()
@@ -129,29 +131,29 @@ planner_configs:
 manipulator:
   default_planner_config: None
   planner_configs:
-    - SBL
-    - EST
-    - LBKPIECE
-    - BKPIECE
-    - KPIECE
-    - RRT
-    - RRTConnect
-    - RRTstar
-    - TRRT
-    - PRM
-    - PRMstar
-    - FMT
-    - BFMT
-    - PDST
-    - STRIDE
-    - BiTRRT
-    - LBTRRT
-    - BiEST
-    - ProjEST
-    - LazyPRM
-    - LazyPRMstar
-    - SPARS
-    - SPARStwo
+    # - SBL
+    # - EST
+    # - LBKPIECE
+    # - BKPIECE
+    # - KPIECE
+    # - RRT
+    # - RRTConnect
+    # - RRTstar
+    # - TRRT
+    # - PRM
+    # - PRMstar
+    # - FMT
+    # - BFMT
+    # - PDST
+    # - STRIDE
+    # - BiTRRT
+    # - LBTRRT
+    # - BiEST
+    # - ProjEST
+    # - LazyPRM
+    # - LazyPRMstar
+    # - SPARS
+    # - SPARStwo
     - PersistentLazyPRMstar
 gripper:
   default_planner_config: ""
