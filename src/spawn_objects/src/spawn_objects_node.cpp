@@ -166,7 +166,7 @@ namespace ns_spawn_objects
             std::string stupidinputname = "/cube"; // I'm frustrated with the lack of templating in getparam api
             int numcubes;
 
-            if (nh.getParam(param_root + "/num", numcubes)) //param_name likely /cubepositions/inputs
+            if (nh.getParam(param_root + "/num", numcubes)) //param_name likely /cube_positions/inputs
             {
                 // spawn cubes in the positions
                 for (size_t i = 1; i <= numcubes; i++) //index from one
