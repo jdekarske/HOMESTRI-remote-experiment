@@ -158,9 +158,9 @@
         <pose frame=''>0 0 0 0 -0 0</pose>
         <collision name='collision'>
           <geometry>
-            <box>
-              <size>0.5 0.5 2</size>
-            </box>
+            <mesh>
+              <uri>model://experiment_world/interface/meshes/interface_dec.dae</uri>
+            </mesh>
           </geometry>
           <max_contacts>10</max_contacts>
           <surface>
