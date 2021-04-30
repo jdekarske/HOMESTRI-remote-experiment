@@ -1,10 +1,10 @@
 cube_positions:
   inputs:
     num: 4 #its a pain in the ass to parse this in cpp, so here
-    cube1: { x: 1.23, y: 0.86, z: -0.34 }
-    cube2: { x: 1.36, y: 0.86, z: -0.34 }
-    cube3: { x: 1.23, y: 0.73, z: -0.34 }
-    cube4: { x: 1.36, y: 0.73, z: -0.34 }
+    cube1: { x: 1.93, y: 0.86, z: -0.44 }
+    cube2: { x: 2.06, y: 0.86, z: -0.44 }
+    cube3: { x: 1.93, y: 0.73, z: -0.44 }
+    cube4: { x: 2.06, y: 0.73, z: -0.44 }
   outputs:
     num: 4
     cube1: { x: 1.82, y: 1.1, z: 0.18 }
