@@ -1,0 +1,65 @@
+Number of literals: 51
+Constructing lookup tables: [10%] [20%] [30%] [40%] [50%] [60%] [70%] [80%] [90%] [100%]
+Post filtering unreachable actions:  [10%] [20%] [30%] [40%] [50%] [60%] [70%] [80%] [90%] [100%]
+No semaphore facts found, returning
+[01;34mNo analytic limits found, not considering limit effects of goal-only operators[00m
+63% of the ground temporal actions in this problem are compression-safe
+Initial heuristic = 24.000, admissible cost estimate 0.000
+b (23.000 | 10.000)b (22.000 | 22.002)b (20.000 | 32.003)b (19.000 | 33.004)b (17.000 | 43.005)b (16.000 | 55.006)b (14.000 | 65.007)b (11.000 | 76.010)b (8.000 | 98.013)b (7.000 | 99.014)b (5.000 | 109.015)b (4.000 | 121.017)b (3.000 | 121.017)b (2.000 | 131.018)b (1.000 | 132.019)(G)
+; No metric specified - using makespan
+
+; Plan found with metric 132.019
+; States evaluated so far: 51
+; States pruned based on pre-heuristic cost lower bound: 0
+; Time 0.04
+; 0.000: (goto_waypoint arm home cout4)  [10.000]
+; 10.001: (goto_waypoint arm cout4 cin4)  [10.000]
+; 20.002: (pickup arm c4 cin4)  [2.000]
+; 22.003: (goto_waypoint arm cin4 cout4)  [10.000]
+; 32.004: (drop arm c4 cout4)  [1.000]
+; 33.005: (goto_waypoint arm cout4 cout3)  [10.000]
+; 43.006: (goto_waypoint arm cout3 cin3)  [10.000]
+; 53.007: (pickup arm c3 cin3)  [2.000]
+; 55.008: (goto_waypoint arm cin3 cout3)  [10.000]
+; 65.009: (drop arm c3 cout3)  [1.000]
+; 66.010: (goto_waypoint arm cout3 cout2)  [10.000]
+; 76.011: (goto_waypoint arm cout2 cin2)  [10.000]
+; 86.012: (pickup arm c2 cin2)  [2.000]
+; 88.013: (goto_waypoint arm cin2 cout2)  [10.000]
+; 98.014: (drop arm c2 cout2)  [1.000]
+; 99.015: (goto_waypoint arm cout2 cout1)  [10.000]
+; 109.016: (goto_waypoint arm cout1 cin1)  [10.000]
+; 119.017: (pickup arm c1 cin1)  [2.000]
+; 121.018: (goto_waypoint arm cin1 cout1)  [10.000]
+; 131.019: (drop arm c1 cout1)  [1.000]
+
+ * All goal deadlines now no later than 132.019
+
+Resorting to best-first search
+Running WA* with W = 5.000, not restarting with goal states
+b (23.000 | 10.000)b (22.000 | 12.000)b (20.000 | 22.001)b (17.000 | 33.004)b (14.000 | 45.006)b (13.000 | 46.006)b (11.000 | 56.007)b (8.000 | 68.009)b (7.000 | 69.010)b (5.000 | 79.012)b (4.000 | 81.013)b (3.000 | 81.013)b (2.000 | 91.014)(G)
+; No metric specified - using makespan
+
+; Plan found with metric 92.015
+; States evaluated so far: 419
+; States pruned based on pre-heuristic cost lower bound: 0
+; Time 0.20
+0.000: (goto_waypoint arm home cin1)  [10.000]
+10.001: (pickup arm c1 cin1)  [2.000]
+12.002: (goto_waypoint arm cin1 cout1)  [10.000]
+22.003: (drop arm c1 cout1)  [1.000]
+23.004: (goto_waypoint arm cout1 cin4)  [10.000]
+33.005: (pickup arm c4 cin4)  [2.000]
+35.006: (goto_waypoint arm cin4 cout4)  [10.000]
+45.007: (drop arm c4 cout4)  [1.000]
+46.008: (goto_waypoint arm cout4 cin3)  [10.000]
+56.009: (pickup arm c3 cin3)  [2.000]
+58.010: (goto_waypoint arm cin3 cout3)  [10.000]
+68.011: (drop arm c3 cout3)  [1.000]
+69.012: (goto_waypoint arm cout3 cin2)  [10.000]
+79.013: (pickup arm c2 cin2)  [2.000]
+81.014: (goto_waypoint arm cin2 cout2)  [10.000]
+91.015: (drop arm c2 cout2)  [1.000]
+
+ * All goal deadlines now no later than 92.015
+b (0.000 | 92.015)
