@@ -24,7 +24,7 @@ RUN apt-get update -qq && apt-get install -y \
 
 ##########################################
 
-COPY src/ src/
+COPY src/ src/remote-experiment
 
 # Get everything going
 RUN source /opt/ros/$ROS_DISTRO/setup.bash \
