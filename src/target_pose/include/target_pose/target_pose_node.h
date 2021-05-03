@@ -24,6 +24,8 @@ private:
     const float approach_height = 0.3;
     const float open_position = 0.0;
     const float closed_position = 0.25;
+    const float orientation_top[4] = {0.0, 0.707, 0.707, 0.0};  // facing positive y
+    const float orientation_front[4] = {0.0, 0.707, 0, -0.707}; // facing negative Z
 
     ros::NodeHandle nh;
     ros::ServiceServer service;
@@ -50,7 +52,7 @@ public:
     // use target_pose_node::Gripper::OPEN or target_pose_node::Gripper::CLOSE
     bool moveGripper(Gripper pos);
 
-    bool move(float x_des, float y_des, float z_des);
+    bool move(float x_des, float y_des, float z_des, float ow_des, float ox_des, float oy_des, float oz_des);
 
     bool pick(float objx, float objy, float objz);
 

@@ -52,13 +52,13 @@ bool target_pose_node::moveGripper(Gripper pos)
   }
 }
 
-bool target_pose_node::move(float x_des, float y_des, float z_des)
+bool target_pose_node::move(float x_des, float y_des, float z_des, float ow_des, float ox_des, float oy_des, float oz_des)
 {
   geometry_msgs::Pose target_pose1;
-  target_pose1.orientation.x = 0.707;
-  target_pose1.orientation.y = 0.0;
-  target_pose1.orientation.z = -.707;
-  target_pose1.orientation.w = 0.0;
+  target_pose1.orientation.w = ow_des;
+  target_pose1.orientation.x = ox_des;
+  target_pose1.orientation.y = oy_des;
+  target_pose1.orientation.z = oz_des;
   target_pose1.position.x = x_des;
   target_pose1.position.y = y_des;
   target_pose1.position.z = z_des;
@@ -68,10 +68,15 @@ bool target_pose_node::move(float x_des, float y_des, float z_des)
   return success;
 }
 
+// this assumes cubes are coming out of a box, will generalize later
 bool target_pose_node::pick(float objx, float objy, float objz)
 {
 
-  bool success = true && move(objx, objy, objz + approach_height) && moveGripper(open_position) && move(objx, objy, objz + pick_height) && moveGripper(closed_position) && move(objx, objy, objz + approach_height);
+  bool success = true && move(objx, objy, objz + approach_height, orientation_top[0], orientation_top[1], orientation_top[2], orientation_top[3]) &&
+                 moveGripper(open_position) &&
+                 move(objx, objy, objz + pick_height, orientation_top[0], orientation_top[1], orientation_top[2], orientation_top[3]) &&
+                 moveGripper(closed_position) &&
+                 move(objx, objy, objz + approach_height, orientation_top[0], orientation_top[1], orientation_top[2], orientation_top[3]);
   return success;
 }
 
@@ -95,7 +100,10 @@ bool target_pose_node::pick(std::string object_name)
 
 bool target_pose_node::place(float objx, float objy, float objz)
 {
-  bool success = true && move(objx, objy, objz + approach_height) && move(objx, objy, objz + place_height) && moveGripper(open_position) && move(objx, objy, objz + approach_height);
+  bool success = true && move(objx, objy - approach_height, objz + pick_height, orientation_front[0], orientation_front[1], orientation_front[2], orientation_front[3]) && 
+  move(objx, objy - pick_height, objz + place_height, orientation_front[0], orientation_front[1], orientation_front[2], orientation_front[3]) && 
+  moveGripper(open_position) && 
+  move(objx, objy - approach_height, objz + pick_height, orientation_front[0], orientation_front[1], orientation_front[2], orientation_front[3]);
   return true;
 }
 
@@ -105,16 +113,18 @@ bool target_pose_node::place(std::string object_name)
   model.request.model_name = object_name;
   model.request.relative_entity_name = "robot";
 
-  if (ros::service::call("/gazebo/get_model_state", model))
-  {
-    geometry_msgs::Point model_position = model.response.pose.position;
-    return place(model_position.x, model_position.y, model_position.z);
-  }
-  else
-  {
-    ROS_ERROR("Failed to get model state");
-    return false;
-  }
+  ROS_INFO("Placing not implemented");
+
+  // if (ros::service::call("/gazebo/get_model_state", model))
+  // {
+  //   geometry_msgs::Point model_position = model.response.pose.position;
+  //   return place(model_position.x, model_position.y, model_position.z);
+  // }
+  // else
+  // {
+  //   ROS_ERROR("Failed to get model state");
+  //   return false;
+  // }
 }
 
 bool target_pose_node::pickplaceCallback(target_pose::pickplace::Request &req, target_pose::pickplace::Response &res)
