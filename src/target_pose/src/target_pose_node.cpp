@@ -4,14 +4,14 @@ target_pose_node::target_pose_node()
 {
   manipulator_group = new moveit::planning_interface::MoveGroupInterface("manipulator");
   gripper_group = new moveit::planning_interface::MoveGroupInterface("gripper");
-  manipulator_group->setPoseReferenceFrame("world"); // this is automatically the
+  manipulator_group->setPoseReferenceFrame("world"); // this needs investigating... this is the default
 }
 
 target_pose_node::target_pose_node(ros::NodeHandle &nodehandle) : nh(nodehandle)
 {
   manipulator_group = new moveit::planning_interface::MoveGroupInterface("manipulator");
   gripper_group = new moveit::planning_interface::MoveGroupInterface("gripper");
-  // manipulator_group->setPoseReferenceFrame("world"); // this is automatically the robot base
+  // manipulator_group->setPoseReferenceFrame("world");
 
   service = nh.advertiseService("pick_place", &target_pose_node::pickplaceCallback, this);
   ROS_INFO("pick_place server started.");
@@ -100,10 +100,10 @@ bool target_pose_node::pick(std::string object_name)
 
 bool target_pose_node::place(float objx, float objy, float objz)
 {
-  bool success = true && move(objx, objy - approach_height, objz + pick_height, orientation_front[0], orientation_front[1], orientation_front[2], orientation_front[3]) && 
-  move(objx, objy - pick_height, objz + place_height, orientation_front[0], orientation_front[1], orientation_front[2], orientation_front[3]) && 
-  moveGripper(open_position) && 
-  move(objx, objy - approach_height, objz + pick_height, orientation_front[0], orientation_front[1], orientation_front[2], orientation_front[3]);
+  bool success = true && move(objx, objy - place_height, objz, orientation_front[0], orientation_front[1], orientation_front[2], orientation_front[3]) &&
+                 move(objx, objy, objz, orientation_front[0], orientation_front[1], orientation_front[2], orientation_front[3]) &&
+                 moveGripper(open_position) &&
+                 move(objx, objy - place_height, objz, orientation_front[0], orientation_front[1], orientation_front[2], orientation_front[3]);
   return true;
 }
 
@@ -113,8 +113,13 @@ bool target_pose_node::place(std::string object_name)
   model.request.model_name = object_name;
   model.request.relative_entity_name = "robot";
 
-  ROS_INFO("Placing not implemented");
+  // cube1: { x: 1.82, y: 1.0, z: 0.18 }
+  geometry_msgs::Point cube;
+  cube.x = 1.82;
+  cube.y = 1.0;
+  cube.z = 0.18;
 
+  return place(cube.x, cube.y, cube.z);
   // if (ros::service::call("/gazebo/get_model_state", model))
   // {
   //   geometry_msgs::Point model_position = model.response.pose.position;
