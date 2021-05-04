@@ -163,7 +163,7 @@ namespace ns_spawn_objects
             // retrieve the positions
             std::string param_root = request.param_name;
             std::map<std::string, double> input;   // for coordinates
-            std::string stupidinputname = "/cube"; // I'm frustrated with the lack of templating in getparam api
+            std::string stupidinputname = "/cube_"; // I'm frustrated with the lack of templating in getparam api
             int numcubes;
 
             if (nh.getParam(param_root + "/num", numcubes)) //param_name likely /cube_positions/inputs
