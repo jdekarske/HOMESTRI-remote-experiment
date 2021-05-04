@@ -100,10 +100,10 @@ bool target_pose_node::pick(std::string object_name)
 
 bool target_pose_node::place(float objx, float objy, float objz)
 {
-  bool success = true && move(objx, objy - place_height, objz, orientation_front[0], orientation_front[1], orientation_front[2], orientation_front[3]) &&
-                 move(objx, objy, objz, orientation_front[0], orientation_front[1], orientation_front[2], orientation_front[3]) &&
+  bool success = true && move(objx, objy - approach_height, objz, orientation_front[0], orientation_front[1], orientation_front[2], orientation_front[3]) &&
+                 move(objx, objy - pick_height, objz, orientation_front[0], orientation_front[1], orientation_front[2], orientation_front[3]) &&
                  moveGripper(open_position) &&
-                 move(objx, objy - place_height, objz, orientation_front[0], orientation_front[1], orientation_front[2], orientation_front[3]);
+                 move(objx, objy - approach_height, objz, orientation_front[0], orientation_front[1], orientation_front[2], orientation_front[3]);
   return true;
 }
 
@@ -113,23 +113,16 @@ bool target_pose_node::place(std::string object_name)
   model.request.model_name = object_name;
   model.request.relative_entity_name = "robot";
 
-  // cube1: { x: 1.82, y: 1.0, z: 0.18 }
-  geometry_msgs::Point cube;
-  cube.x = 1.82;
-  cube.y = 1.0;
-  cube.z = 0.18;
+  std::map<std::string, double> coords; // for coordinates
+  std::string param_root = "/cube_positions/outputs/";
+  std::string object_position = param_root + object_name;
 
-  return place(cube.x, cube.y, cube.z);
-  // if (ros::service::call("/gazebo/get_model_state", model))
-  // {
-  //   geometry_msgs::Point model_position = model.response.pose.position;
-  //   return place(model_position.x, model_position.y, model_position.z);
-  // }
-  // else
-  // {
-  //   ROS_ERROR("Failed to get model state");
-  //   return false;
-  // }
+  if (!ros::param::get(object_position, coords))
+  {
+    ROS_WARN("incorrect cube output: got %s", object_position.c_str());
+  }
+
+  return place(coords["x"], coords["y"], coords["z"]);
 }
 
 bool target_pose_node::pickplaceCallback(target_pose::pickplace::Request &req, target_pose::pickplace::Response &res)
