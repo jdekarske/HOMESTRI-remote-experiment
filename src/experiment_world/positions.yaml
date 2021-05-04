@@ -1,16 +1,16 @@
 cube_positions:
   inputs:
     num: 4 #its a pain in the ass to parse this in cpp, so here
-    cube1: { x: 1.93, y: 0.86, z: -0.44 }
-    cube2: { x: 2.06, y: 0.86, z: -0.44 }
-    cube3: { x: 1.93, y: 0.73, z: -0.44 }
-    cube4: { x: 2.06, y: 0.73, z: -0.44 }
+    cube_1: { x: 1.93, y: 0.86, z: -0.44 }
+    cube_2: { x: 2.06, y: 0.86, z: -0.44 }
+    cube_3: { x: 1.93, y: 0.73, z: -0.44 }
+    cube_4: { x: 2.06, y: 0.73, z: -0.44 }
   outputs:
     num: 4
-    cube1: { x: 1.82, y: 1.1, z: 0.18 }
-    cube2: { x: 1.94, y: 1.1, z: 0.18 }
-    cube3: { x: 2.06, y: 1.1, z: 0.18 }
-    cube4: { x: 2.18, y: 1.1, z: 0.18 }
+    cube_1: { x: 1.82, y: 1.1, z: 0.18 }
+    cube_2: { x: 1.94, y: 1.1, z: 0.18 }
+    cube_3: { x: 2.06, y: 1.1, z: 0.18 }
+    cube_4: { x: 2.18, y: 1.1, z: 0.18 }
 
 waypoints:
   input: { x: 1.3, y: 0.8, z: -0.1 }
