@@ -41,7 +41,7 @@ bool target_pose_node::moveGripper(float pos)
 {
   gripper_group->setJointValueTarget("gripper_finger1_joint", pos);
   bool success = (gripper_group->move() == moveit::planning_interface::MoveItErrorCode::SUCCESS);
-  ros::Duration(0.7).sleep(); //wait for the object to attach
+  // ros::Duration(0.7).sleep(); //wait for the object to attach
   return success;
 }
 
@@ -80,7 +80,9 @@ bool target_pose_node::pick(float objx, float objy, float objz)
   bool success = true && move(objx, objy, objz + approach_height, orientation_top[0], orientation_top[1], orientation_top[2], orientation_top[3]) &&
                  moveGripper(open_position) &&
                  move(objx, objy, objz + pick_height, orientation_top[0], orientation_top[1], orientation_top[2], orientation_top[3]) &&
-                 moveGripper(closed_position);
+                 moveGripper(closed_position) &&
+                 ros::service::call("/link_attacher_node/attach", attach) &&
+                 move(objx, objy, objz + approach_height, orientation_top[0], orientation_top[1], orientation_top[2], orientation_top[3]);
   return success;
 }
 
@@ -100,8 +102,7 @@ bool target_pose_node::pick(std::string object_name)
   if (ros::service::call("/gazebo/get_model_state", model))
   {
     geometry_msgs::Point model_position = model.response.pose.position;
-    return pick(model_position.x, model_position.y, model_position.z) &&
-           ros::service::call("/link_attacher_node/attach", attach);
+    return pick(model_position.x, model_position.y, model_position.z);
   }
   else
   {
@@ -114,7 +115,9 @@ bool target_pose_node::place(float objx, float objy, float objz)
 {
   bool success = true && move(objx, objy - approach_height, objz, orientation_front[0], orientation_front[1], orientation_front[2], orientation_front[3]) &&
                  move(objx, objy - pick_height, objz, orientation_front[0], orientation_front[1], orientation_front[2], orientation_front[3]) &&
-                 moveGripper(open_position);
+                 moveGripper(open_position) &&
+                 ros::service::call("/link_attacher_node/detach", attach) &&
+                 move(objx, objy - approach_height, objz, orientation_front[0], orientation_front[1], orientation_front[2], orientation_front[3]);
   return true;
 }
 
@@ -139,8 +142,7 @@ bool target_pose_node::place(std::string object_name)
     ROS_WARN("incorrect cube output: got %s", object_position.c_str());
   }
 
-  if (place(coords["x"], coords["y"], coords["z"]) &&
-      ros::service::call("/link_attacher_node/detach", attach))
+  if (place(coords["x"], coords["y"], coords["z"]))
   {
     attach.request.model_name_2 = "";
     return true;
