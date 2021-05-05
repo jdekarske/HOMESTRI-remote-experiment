@@ -24,6 +24,7 @@
   <build_depend>interactive_markers</build_depend>
   <build_depend>moveit_visual_tools</build_depend>
   <build_depend>rviz_visual_tools</build_depend>
+  <build_depend>gazebo_ros_link_attacher</build_depend>
 
   <exec_depend>roscpp</exec_depend>
   <exec_depend>gazebo</exec_depend>
@@ -41,5 +42,6 @@
   <exec_depend>interactive_markers</exec_depend>
   <exec_depend>moveit_visual_tools</exec_depend>
   <exec_depend>rviz_visual_tools</exec_depend>
+  <exec_depend>gazebo_ros_link_attacher</exec_depend>
 
 </package>

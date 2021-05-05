@@ -16,6 +16,9 @@
 #include <target_pose/pickplace.h>
 #include <gazebo_msgs/GetModelState.h>
 
+// Attach
+#include <gazebo_ros_link_attacher/Attach.h>
+
 class target_pose_node
 {
 private:
@@ -23,9 +26,11 @@ private:
     const float place_height = 0.23;
     const float approach_height = 0.3;
     const float open_position = 0.0;
-    const float closed_position = 0.25;
+    const float closed_position = 0.20;
     const float orientation_top[4] = {0.0, 0.707, 0, -0.707}; // facing negative Z
     const float orientation_front[4] = {0.0, 0.707, 0.707, 0.0};  // facing positive y
+
+    gazebo_ros_link_attacher::Attach attach; //currently attached block
 
     ros::NodeHandle nh;
     ros::ServiceServer service;

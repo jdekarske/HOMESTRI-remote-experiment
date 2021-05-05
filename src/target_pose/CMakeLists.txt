@@ -14,6 +14,7 @@ find_package(catkin REQUIRED COMPONENTS
     std_msgs
     gazebo_msgs
     gazebo_ros
+    gazebo_ros_link_attacher
 )
 
 add_service_files(
@@ -43,6 +44,7 @@ catkin_package(
     moveit_visual_tools
     moveit_ros_planning_interface
     interactive_markers
+    gazebo_ros_link_attacher
 )
 
 ###

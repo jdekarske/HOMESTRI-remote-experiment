@@ -13,6 +13,11 @@ target_pose_node::target_pose_node(ros::NodeHandle &nodehandle) : nh(nodehandle)
   gripper_group = new moveit::planning_interface::MoveGroupInterface("gripper");
   // manipulator_group->setPoseReferenceFrame("world");
 
+  attach.request.model_name_1 = "robot";
+  attach.request.link_name_1 = "gripper_finger1_finger_tip_link";
+  attach.request.model_name_2 = "";
+  attach.request.link_name_2 = "link";
+
   service = nh.advertiseService("pick_place", &target_pose_node::pickplaceCallback, this);
   ROS_INFO("pick_place server started.");
 }
@@ -75,13 +80,19 @@ bool target_pose_node::pick(float objx, float objy, float objz)
   bool success = true && move(objx, objy, objz + approach_height, orientation_top[0], orientation_top[1], orientation_top[2], orientation_top[3]) &&
                  moveGripper(open_position) &&
                  move(objx, objy, objz + pick_height, orientation_top[0], orientation_top[1], orientation_top[2], orientation_top[3]) &&
-                 moveGripper(closed_position) &&
-                 move(objx, objy, objz + approach_height, orientation_top[0], orientation_top[1], orientation_top[2], orientation_top[3]);
+                 moveGripper(closed_position);
   return success;
 }
 
 bool target_pose_node::pick(std::string object_name)
 {
+  if (attach.request.model_name_2 != "")
+  {
+    ROS_ERROR("Object %s already attached", attach.request.model_name_2.c_str());
+    return false;
+  }
+  attach.request.model_name_2 = object_name;
+
   gazebo_msgs::GetModelState model;
   model.request.model_name = object_name;
   model.request.relative_entity_name = "robot";
@@ -89,7 +100,8 @@ bool target_pose_node::pick(std::string object_name)
   if (ros::service::call("/gazebo/get_model_state", model))
   {
     geometry_msgs::Point model_position = model.response.pose.position;
-    return pick(model_position.x, model_position.y, model_position.z);
+    return pick(model_position.x, model_position.y, model_position.z) &&
+           ros::service::call("/link_attacher_node/attach", attach);
   }
   else
   {
@@ -102,13 +114,18 @@ bool target_pose_node::place(float objx, float objy, float objz)
 {
   bool success = true && move(objx, objy - approach_height, objz, orientation_front[0], orientation_front[1], orientation_front[2], orientation_front[3]) &&
                  move(objx, objy - pick_height, objz, orientation_front[0], orientation_front[1], orientation_front[2], orientation_front[3]) &&
-                 moveGripper(open_position) &&
-                 move(objx, objy - approach_height, objz, orientation_front[0], orientation_front[1], orientation_front[2], orientation_front[3]);
+                 moveGripper(open_position);
   return true;
 }
 
 bool target_pose_node::place(std::string object_name)
 {
+  if (attach.request.model_name_2 == "")
+  {
+    ROS_ERROR("Nothing to detach!");
+    return false;
+  }
+
   gazebo_msgs::GetModelState model;
   model.request.model_name = object_name;
   model.request.relative_entity_name = "robot";
@@ -122,7 +139,16 @@ bool target_pose_node::place(std::string object_name)
     ROS_WARN("incorrect cube output: got %s", object_position.c_str());
   }
 
-  return place(coords["x"], coords["y"], coords["z"]);
+  if (place(coords["x"], coords["y"], coords["z"]) &&
+      ros::service::call("/link_attacher_node/detach", attach))
+  {
+    attach.request.model_name_2 = "";
+    return true;
+  }
+  else
+  {
+    return false;
+  }
 }
 
 bool target_pose_node::pickplaceCallback(target_pose::pickplace::Request &req, target_pose::pickplace::Response &res)
