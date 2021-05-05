@@ -34,9 +34,9 @@
   <node name="cube_spawner" pkg="spawn_objects" type="spawn_objects_node" respawn="false" output="screen"/>
 
   <!-- port matches Dockerfile (default), should probably obfuscate a tiny bit-->
-  <include file="$(find rosbridge_server)/launch/rosbridge_websocket.launch" > 
+  <!-- <include file="$(find rosbridge_server)/launch/rosbridge_websocket.launch" > 
      <arg name="port" value="9090"/>
-  </include>
+  </include> -->
 
   <!-- Add cameras -->
   <!-- <node name="spawn_gazebo_model_camera_down" pkg="gazebo_ros" type="spawn_model" args="-sdf -file $(find experiment_world)/remote_camera/model.sdf -model remote_camera_down -x 2.5 -y 0.6 -z 1.0 -R 1.57 -P 1.5 -Y 3"
