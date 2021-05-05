@@ -14,7 +14,7 @@ target_pose_node::target_pose_node(ros::NodeHandle &nodehandle) : nh(nodehandle)
   // manipulator_group->setPoseReferenceFrame("world");
 
   attach.request.model_name_1 = "robot";
-  attach.request.link_name_1 = "gripper_finger1_finger_tip_link";
+  attach.request.link_name_1 = "wrist_3_link";
   attach.request.model_name_2 = "";
   attach.request.link_name_2 = "link";
 
