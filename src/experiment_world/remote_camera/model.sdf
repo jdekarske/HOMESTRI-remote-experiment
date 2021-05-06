@@ -48,8 +48,10 @@
           <image>
             <!-- <width>320</width>
             <height>240</height> -->
-            <width>852</width>
-            <height>480</height>
+            <!-- <width>852</width>
+            <height>480</height> -->
+            <width>1280</width>
+            <height>720</height>
           </image>
           <clip>
             <near>0.1</near>
