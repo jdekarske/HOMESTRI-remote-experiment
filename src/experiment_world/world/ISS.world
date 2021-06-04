@@ -40,28 +40,6 @@
             <izz>4.00191e+07</izz>
           </inertia>
         </inertial>
-        <collision name='body_fixed_joint_lump__iss_us_lab_collision_collision'>
-          <pose frame=''>0 0 0 0 -0 0</pose>
-          <geometry>
-            <mesh>
-              <scale>1 1 1</scale>
-              <uri>model://astrobee_iss/meshes/us_lab.dae</uri>
-            </mesh>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-          </surface>
-        </collision>
         <visual name='body_fixed_joint_lump__iss_us_lab_visual_visual'>
           <pose frame=''>0 0 0 0 -0 0</pose>
           <geometry>
