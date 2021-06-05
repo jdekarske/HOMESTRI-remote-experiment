@@ -169,7 +169,7 @@ namespace ns_spawn_objects
             if (nh.getParam(param_root + "/num", numcubes)) //param_name likely /cube_positions/inputs
             {
                 // if we say position = -1, then spawn all the cubes
-                if (request.position == -1)
+                if (request.position == 0)
                 {
                     // spawn cubes in the positions
                     for (size_t i = 1; i <= numcubes; i++) //index from one
@@ -181,8 +181,16 @@ namespace ns_spawn_objects
                 else
                 {
                     // spawn a single cube in a position
-                    nh.getParam(param_root + stupidinputname + std::to_string(request.position + 1), input);
-                    status = spawncube(input["x"], input["y"], input["z"], request.position + 1) && status;
+                    nh.getParam(param_root + stupidinputname + std::to_string(request.position), input);
+                    // if any of the colors are negative, make it a random color
+                    if (request.color[0] < 0 || request.color[1] < 0 || request.color[2] < 0)
+                    {
+                        status = spawncube(input["x"], input["y"], input["z"], request.position, request.color[0], request.color[1], request.color[2]) && status;
+                    }
+                    else
+                    {
+                        status = spawncube(input["x"], input["y"], input["z"], request.position) && status;
+                    }
                 }
             }
             else
