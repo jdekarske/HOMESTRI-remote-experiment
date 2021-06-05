@@ -1,10 +1,14 @@
-# the object id in gazebo for which to spawn above (not implemented)
+# the param_name with locations of the points
 # will delete existing cubes, otherwise will append the model ID
+# the position in the param_name to place the cube
+# the color of a cube {R,G,B}(only if spawning a single cube)
 # the number of objects along the length (long side of the table). also used to fill in the first cubes for the parameter case
 # the number of objects along the width (short side of the table)
 
 string param_name
 bool overwrite
+uint8 position
+float32[] color
 uint8 length
 uint8 width
 ---
