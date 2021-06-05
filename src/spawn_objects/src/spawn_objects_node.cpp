@@ -185,11 +185,11 @@ namespace ns_spawn_objects
                     // if any of the colors are negative, make it a random color
                     if (request.color[0] < 0 || request.color[1] < 0 || request.color[2] < 0)
                     {
-                        status = spawncube(input["x"], input["y"], input["z"], request.position, request.color[0], request.color[1], request.color[2]) && status;
+                        status = spawncube(input["x"], input["y"], input["z"], request.position) && status;
                     }
                     else
                     {
-                        status = spawncube(input["x"], input["y"], input["z"], request.position) && status;
+                                                status = spawncube(input["x"], input["y"], input["z"], request.position, request.color[0], request.color[1], request.color[2]) && status;
                     }
                 }
             }
