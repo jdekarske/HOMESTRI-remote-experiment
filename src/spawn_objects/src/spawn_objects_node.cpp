@@ -82,6 +82,7 @@ namespace ns_spawn_objects
                     </geometry>\
                     <material>\
                         <ambient>" << red << " " << green << " " << blue << " 1</ambient>\
+                        <diffuse>" << red << " " << green << " " << blue << " 1</diffuse>\
                     </material>\
                 </visual>\
                 </link>\
