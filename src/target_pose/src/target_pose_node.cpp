@@ -93,7 +93,6 @@ bool target_pose_node::pick(std::string object_name)
     ROS_ERROR("Object %s already attached", attach.request.model_name_2.c_str());
     return false;
   }
-  attach.request.model_name_2 = object_name;
 
   gazebo_msgs::GetModelState model;
   model.request.model_name = object_name;
@@ -101,8 +100,18 @@ bool target_pose_node::pick(std::string object_name)
 
   if (ros::service::call("/gazebo/get_model_state", model))
   {
+    attach.request.model_name_2 = object_name;
     geometry_msgs::Point model_position = model.response.pose.position;
-    return pick(model_position.x, model_position.y, model_position.z);
+    if (pick(model_position.x, model_position.y, model_position.z))
+    {
+      return true;
+    }
+    else
+    {
+      attach.request.model_name_2 = "";
+      ROS_ERROR("Failed to pick");
+      return false;
+    }
   }
   else
   {
@@ -118,7 +127,7 @@ bool target_pose_node::place(float objx, float objy, float objz)
                  moveGripper(open_position) &&
                  ros::service::call("/link_attacher_node/detach", attach) &&
                  move(objx, objy - approach_height, objz, orientation_front[0], orientation_front[1], orientation_front[2], orientation_front[3]);
-  return true;
+  return success;
 }
 
 bool target_pose_node::place(std::string object_name)
