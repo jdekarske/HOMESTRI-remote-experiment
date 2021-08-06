@@ -131,9 +131,6 @@ namespace ns_spawn_objects
     bool spawn_objects_node::callback(spawn_objects::spawn_objects::Request &request, spawn_objects::spawn_objects::Response &response)
     {
         std::vector<std::string> cubes = findModelNames(model_prefix);
-        int all_id = 0;
-
-        bool status = true; // make sure ALL cubes spawn successfully
 
         for (size_t i = 0; i < cubes.size(); i++)
         {
@@ -151,12 +148,14 @@ namespace ns_spawn_objects
                     ROS_ERROR("Failed to delete model: %s", cubes[i].c_str());
                 }
             }
-            else
-            {
-                // find the max id to iterate from
-                all_id = std::max(all_id, (int)(cubes[i].back() - '0')) + 1;
-            }
+            // else
+            // {
+                // find the max id to iterate from (done earlier) TODO
+                // max_id = std::max(max_id, (int)(cubes[i].back() - '0')) + 1;
+            // }
         }
+
+        bool status = true; // make sure ALL cubes spawn successfully
 
         // option A will load cube positions from a param file in the provided format
         if (!request.param_name.empty())
@@ -186,12 +185,13 @@ namespace ns_spawn_objects
                     // if any of the colors are negative, make it a random color
                     if (request.color[0] < 0 || request.color[1] < 0 || request.color[2] < 0)
                     {
-                        status = spawncube(input["x"], input["y"], input["z"], request.position) && status;
+                        status = spawncube(input["x"], input["y"], input["z"], max_id + 1) && status;
                     }
                     else
                     {
-                                                status = spawncube(input["x"], input["y"], input["z"], request.position, request.color[0], request.color[1], request.color[2]) && status;
+                        status = spawncube(input["x"], input["y"], input["z"], max_id + 1, request.color[0], request.color[1], request.color[2]) && status;
                     }
+                    max_id++;
                 }
             }
             else
@@ -217,8 +217,8 @@ namespace ns_spawn_objects
             {
                 for (float y = start_coord[1]; y <= start_coord[1] + objectset_dim[1]; y = y + cube_separation)
                 {
-                    status = spawncube(x, y, table_height + offset_height, all_id) && status;
-                    all_id++;
+                    status = spawncube(x, y, table_height + offset_height, max_id+1) && status;
+                    max_id++;
                 }
             }
         }

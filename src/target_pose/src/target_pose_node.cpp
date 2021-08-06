@@ -94,13 +94,39 @@ bool target_pose_node::pick(std::string object_name)
     return false;
   }
 
+  const char *model_prefix = "cube_";
+
+  // get the object position (1,2,3,4 changed from object name)
+  int position = object_name.back()  - '0';
+
+  // get current cubes in sim
+  std::vector<std::string> modelNames;
+  gazebo_msgs::GetWorldProperties world;
+  if (ros::service::call("/gazebo/get_world_properties", world))
+  {
+    std::vector<std::string> models = world.response.model_names;
+    for (size_t i = 0; i < models.size(); i++)
+    {
+      if (models[i].find(model_prefix) != std::string::npos)
+      {
+        modelNames.push_back(models[i]);
+      }
+    }
+  }
+  else
+  {
+    ROS_ERROR("Failed to get world properties");
+  }
+
+  std::string gazebo_object_name = modelNames[position-1]; // assume they are in order, index from 1
+
   gazebo_msgs::GetModelState model;
-  model.request.model_name = object_name;
+  model.request.model_name = gazebo_object_name;
   model.request.relative_entity_name = "robot";
 
   if (ros::service::call("/gazebo/get_model_state", model))
   {
-    attach.request.model_name_2 = object_name;
+    attach.request.model_name_2 = gazebo_object_name;
     geometry_msgs::Point model_position = model.response.pose.position;
     if (pick(model_position.x, model_position.y, model_position.z))
     {

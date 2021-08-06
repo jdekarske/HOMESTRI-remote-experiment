@@ -19,6 +19,7 @@ namespace ns_spawn_objects
         const float cube_mass = 0.25;
         const float offset_height = 0.05; // don't spawn *in* the table
         const char *model_prefix = "cube_";
+        int max_id = 0;
 
         ros::NodeHandle nh;
 

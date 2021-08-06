@@ -1,5 +1,7 @@
 #pragma once
 
+#include <algorithm>
+
 // ROS
 #include <ros/ros.h>
 #include <ros/console.h>
@@ -15,6 +17,7 @@
 // Msg
 #include <target_pose/pickplace.h>
 #include <gazebo_msgs/GetModelState.h>
+#include "gazebo_msgs/GetWorldProperties.h"
 
 // Attach
 #include <gazebo_ros_link_attacher/Attach.h>
