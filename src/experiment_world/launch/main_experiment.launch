@@ -14,6 +14,8 @@
   -->
   <arg name="use_gui" default="false" />
   <arg name="rviz_gui" default="true" />
+  <arg name="ws_port" default="9090" />
+  <arg name="ws_externalport" default="9090" />
 
   <!-- Gazebo specific options -->
   <arg name="gazebo_gui" default="true"/>
@@ -35,7 +37,8 @@
 
   <!-- port matches Dockerfile (default), should probably obfuscate a tiny bit-->
   <include file="$(find rosbridge_server)/launch/rosbridge_websocket.launch" > 
-     <arg name="port" value="9090"/>
+     <arg name="port" value="$(arg ws_port)"/>
+     <arg name="websocket_external_port" value="$(arg ws_externalport)"/>
   </include>
 
   <!-- Add cameras -->
