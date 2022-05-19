@@ -3,10 +3,17 @@ FROM jdekarske/homestri-ur5e:latest
 
 SHELL ["/bin/bash", "-c"]
 
-# For gui stuff (I think)
+# For gui stuff
+ENV DEBIAN_FRONTEND=noninteractive
+ENV DISPLAY=:1
+ENV QT_X11_NO_MITSHM=1
+ENV NVIDIA_VISIBLE_DEVICES=all
+ENV NVIDIA_DRIVER_CAPABILITIES=all
+
 RUN \
   apt-get update -qq && \
-  apt-get -y install libgl1-mesa-glx libgl1-mesa-dri && \
+  apt-get -y install libgl1-mesa-glx libgl1-mesa-dri \
+  xserver-xorg-video-dummy x11-apps && \
   rm -rf /var/lib/apt/lists/*
 
 # Setup environment
@@ -26,6 +33,9 @@ RUN apt-get update -qq && apt-get install -y \
 
 COPY src/ src/remote-experiment
 
+COPY dummy-xorg.conf /etc/X11/dummy-xorg.conf 
+COPY startdummy-xorg.bash /etc/X11/startdummy-xorg.bash
+
 # Get everything going
 RUN source /opt/ros/$ROS_DISTRO/setup.bash \
  && apt-get update -qq \
@@ -37,6 +47,3 @@ RUN source /opt/ros/$ROS_DISTRO/setup.bash \
 EXPOSE 9090
 
 CMD ["/bin/bash"]
-# ENTRYPOINT ["/bin/bash", "-c", "source /catkin_ws/docker-entrypoint.sh && roslaunch moveit_config demo.launch"]
-# run this from the git repo: $ ./gui-docker -it -p 9090:9090 -v $PWD/experimentdevel:/catkin_ws/src/experimentdevel jdekarske/homestri-remote-experiment:latest
-# ./gui-docker -it -p 9090:9090 -v $PWD/experimentdevel:/catkin_ws/src/experimentdevel --cap-add=SYS_PTRACE --security-opt seccomp=unconfined --security-opt apparmor=unconfined jdekarske/homestri-remote-experiment:latest
