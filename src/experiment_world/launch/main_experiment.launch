@@ -71,7 +71,7 @@
   </node>
 
   <!-- Given the published joint states, publish tf for the robot links -->
-  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="true" output="screen" />
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="false" output="screen" />
 
   <!-- Remap follow_joint_trajectory -->
   <remap from="/follow_joint_trajectory" to="/arm_controller/follow_joint_trajectory"/>
@@ -96,6 +96,6 @@
   <node name = "moveit_publish_scene_from_text" pkg= "moveit_ros_planning" type = "moveit_publish_scene_from_text" args= "$(arg scene_file)"/>
 
   <!-- the node to move the cubes around! -->
-  <node name="picking" pkg="target_pose" type="target_pose_node" respawn="true" output="screen" />
+  <node name="picking" pkg="target_pose" type="target_pose_node" respawn="false" output="screen" />
 
 </launch>
