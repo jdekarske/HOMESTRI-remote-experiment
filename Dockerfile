@@ -43,7 +43,4 @@ RUN source /opt/ros/$ROS_DISTRO/setup.bash \
  && rosdep install --from-path src --ignore-src -y \
  && catkin_make
 
-# For rosbridge
-EXPOSE 9090
-
 CMD ["/bin/bash"]
