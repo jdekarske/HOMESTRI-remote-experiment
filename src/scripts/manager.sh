@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 
-set -o nounset
+# TODO this is doing something weird
+# claiming unbound variable ROS_URI
+# I think this should go after source ros or use 'set' that is okay with unbound variables
+# set -o nounset
 
 # This program's basename.
 _ME="$(basename "${0}")"
