@@ -22,7 +22,7 @@ RUN source /opt/ros/$ROS_DISTRO/setup.bash
 
 #Rosbridge for web viewer
 RUN apt-get update -qq && apt-get install -y \
- ros-melodic-rosbridge-server
+ ros-$ROS_DISTRO-rosbridge-server
 
 # Get ROSPlan stuff
 RUN apt-get update -qq && apt-get install -y \
@@ -41,6 +41,6 @@ RUN source /opt/ros/$ROS_DISTRO/setup.bash \
  && apt-get update -qq \
  && rosdep update \
  && rosdep install --from-path src --ignore-src -y \
- && catkin_make
+ && catkin build
 
 CMD ["/bin/bash"]
