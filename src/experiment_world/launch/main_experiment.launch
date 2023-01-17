@@ -46,6 +46,8 @@
     respawn="false" output="screen" /> -->
   <!-- <node pkg="image_transport" type="republish" name="republish_camera_down" output="screen" args="raw in:=/camera/remote_camera_down/image_raw compressed out:=/camera/remote_camera_down"/> -->
 
+  <param name="/camera/remote_camera_rack/compressed/format" value="png"/>
+  <param name="/camera/remote_camera_rack/compressed/png_level" value="9"/>
   <node name="spawn_gazebo_model_camera_rack" pkg="gazebo_ros" type="spawn_model" args="-sdf -file $(find experiment_world)/remote_camera/model.sdf -model remote_camera_rack -x 2.0 -y -0.9 -z 1.0 -R 0.0 -P 0.5 -Y 1.5"
     respawn="false" output="screen" />
   <node pkg="image_transport" type="republish" name="republish_camera_rack" output="screen" args="raw in:=/camera/remote_camera_rack/image_raw compressed out:=/camera/remote_camera_rack"/>
