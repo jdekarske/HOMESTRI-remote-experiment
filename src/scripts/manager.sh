@@ -24,7 +24,7 @@ _kill() {
 
 _rosbag() {
     _source_ros
-    rosbag record -O /catkin_ws/rosbags/${workerID}-$(date +'%Y%m%d%H%M%S').bag -a -x '.*camera.*'
+    rosbag record -O /catkin_ws/rosbags/"$1"-$(date +'%Y%m%d%H%M%S').bag -a -x '.*camera.*'
 }
 
 _status() {
@@ -36,7 +36,7 @@ _main() {
     case $1 in
       -s|--start) _start;;
       -k|--kill) _kill;;
-      -b|--rosbag) _rosbag;;
+      -b|--rosbag) _rosbag $2 ;;
       -t|--status) _status;;
       *) "Unknown parameter passed: $1";;
     esac;
