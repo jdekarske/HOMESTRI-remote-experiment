@@ -1,0 +1,26 @@
+<launch>
+  <!-- benchmark options file -->
+  <arg name="bench_opts" default="$(find experiment_world)/../benchmark/all_planners.yaml"/>
+
+  <!-- Load robot settings -->
+  <include file="$(find experiment_world)/launch/main_experiment.launch">
+    <arg name="rviz_gui" value="true" />
+  </include>
+
+  <!-- Load warehouse containing scenes and queries to benchmark -->
+  <param name="moveit_warehouse_port" value="33829" />
+  <param name="moveit_warehouse_host" value="localhost" />
+  <param name="warehouse_exec" value="mongod" />
+  <param name="warehouse_plugin" value="warehouse_ros_mongo::MongoDatabaseConnection" />
+
+  <arg name="moveit_warehouse_database_path" default="$(find experiment_world)/../benchmark/warehouse.db"/>
+  <node name="$(anon mongo_wrapper_ros)" cwd="ROS_HOME" type="mongo_wrapper_ros.py" pkg="warehouse_ros_mongo">
+    <param name="overwrite" value="false"/>
+    <param name="database_path" value="$(arg moveit_warehouse_database_path)" />
+  </node>
+
+  <!-- Launch benchmark node -->
+  <node name="moveit_run_benchmark" pkg="moveit_ros_benchmarks" type="moveit_run_benchmark" output="screen" required="true">
+    <rosparam command="load" file="$(arg bench_opts)"/>
+  </node>
+</launch>
