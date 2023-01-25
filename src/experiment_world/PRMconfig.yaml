@@ -129,31 +129,31 @@ planner_configs:
     dense_delta_fraction: 0.001  # delta fraction for interface detection. default: 0.001
     max_failures: 5000  # maximum consecutive failure limit. default: 5000
 manipulator:
-  default_planner_config: None
+  default_planner_config: PersistentLazyPRMstar
   planner_configs:
-    # - SBL
-    # - EST
-    # - LBKPIECE
-    # - BKPIECE
-    # - KPIECE
-    # - RRT
-    # - RRTConnect
-    # - RRTstar
-    # - TRRT
-    # - PRM
-    # - PRMstar
-    # - FMT
-    # - BFMT
-    # - PDST
-    # - STRIDE
-    # - BiTRRT
-    # - LBTRRT
-    # - BiEST
-    # - ProjEST
-    # - LazyPRM
-    # - LazyPRMstar
-    # - SPARS
-    # - SPARStwo
+    - SBL
+    - EST
+    - LBKPIECE
+    - BKPIECE
+    - KPIECE
+    - RRT
+    - RRTConnect
+    - RRTstar
+    - TRRT
+    - PRM
+    - PRMstar
+    - FMT
+    - BFMT
+    - PDST
+    - STRIDE
+    - BiTRRT
+    - LBTRRT
+    - BiEST
+    - ProjEST
+    - LazyPRM
+    - LazyPRMstar
+    - SPARS
+    - SPARStwo
     - PersistentLazyPRMstar
 gripper:
   default_planner_config: ""
