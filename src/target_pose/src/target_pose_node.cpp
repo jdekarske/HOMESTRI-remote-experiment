@@ -18,7 +18,8 @@ target_pose_node::target_pose_node(ros::NodeHandle &nodehandle) : nh(nodehandle)
   attach.request.model_name_2 = "";
   attach.request.link_name_2 = "link";
 
-  service = nh.advertiseService("pick_place", &target_pose_node::pickplaceCallback, this);
+  pickplace_service = nh.advertiseService("pick_place", &target_pose_node::pickplaceCallback, this);
+  reset_service = nh.advertiseService("pick_place/reset", &target_pose_node::resetCallback, this);
   ROS_INFO("pick_place server started.");
 }
 
@@ -28,8 +29,10 @@ target_pose_node::~target_pose_node()
   delete gripper_group;
 }
 
-void target_pose_node::initPosition()
+bool target_pose_node::initPosition()
 {
+  manipulator_group->setStartStateToCurrentState();
+  gripper_group->setStartStateToCurrentState();
   manipulator_group->setNamedTarget("vertical");
   manipulator_group->move();
 
@@ -41,6 +44,7 @@ void target_pose_node::initPosition()
 
   moveGripper(open_position);
   ROS_INFO("Arm initial postion");
+  return true; //TODO success everytime I guess?
 }
 
 bool target_pose_node::moveGripper(float pos)
@@ -203,12 +207,15 @@ bool target_pose_node::pickplaceCallback(target_pose::pickplace::Request &req, t
   res.status = pick(req.pick_object);
   res.status = place(req.place_object) && res.status;
   if (!res.status) {
-    //TODO make "reset" a service call
-    ROS_WARN("Something went wrong, resetting arm")
-    manipulator_group->setStartStateToCurrentState(); // this needs investigating... this is the default
-    gripper_group->setStartStateToCurrentState(); // this needs investigating... this is the default
+    ROS_WARN("Something went wrong, resetting arm");
     initPosition();
   }
+  return res.status;
+}
+
+bool target_pose_node::resetCallback(target_pose::reset::Request &req, target_pose::reset::Response &res)
+{
+  res.status = initPosition();
   return res.status;
 }
 

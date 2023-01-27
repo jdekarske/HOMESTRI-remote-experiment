@@ -10,6 +10,9 @@ while [[ "$#" -gt 0 ]]; do
 done
 
 for ((i = 0; i < $num_runs; i++)); do
+    # reset the arm
+    rosservice call /pick_place/reset "{}"
+
     # delete all cubes
     rosservice call /spawn_objects_service "{param_name: '', \
         overwrite: true, position: 0, color: [0], length: 0, width: 0}"
@@ -21,7 +24,8 @@ for ((i = 0; i < $num_runs; i++)); do
     done
 
     # pickplace cunes
-    for ((j = 1; j < 5; j++)); do
-        rosservice call /pick_place "{pick_object: 'cube_$j', place_object: 'cube_$j'}"
+    for ((k = 1; k < 5; k++)); do
+        rosservice call /pick_place "{pick_object: 'cube_$k', place_object: 'cube_$k'}"
+    rosservice call /pick_place/reset "{}" 
     done
 done

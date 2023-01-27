@@ -16,6 +16,7 @@
 
 // Msg
 #include <target_pose/pickplace.h>
+#include <target_pose/reset.h>
 #include <gazebo_msgs/GetModelState.h>
 #include "gazebo_msgs/GetWorldProperties.h"
 
@@ -36,7 +37,8 @@ private:
     gazebo_ros_link_attacher::Attach attach; //currently attached block
 
     ros::NodeHandle nh;
-    ros::ServiceServer service;
+    ros::ServiceServer pickplace_service;
+    ros::ServiceServer reset_service;
 
     moveit::planning_interface::MoveGroupInterface *manipulator_group;
     moveit::planning_interface::MoveGroupInterface *gripper_group;
@@ -47,7 +49,7 @@ public:
     ~target_pose_node();
 
     // move to the assigned position which is above the table
-    void initPosition();
+    bool initPosition();
 
     enum Gripper
     {
@@ -71,4 +73,5 @@ public:
     bool place(std::string object_name);
 
     bool pickplaceCallback(target_pose::pickplace::Request &req, target_pose::pickplace::Response &res);
+    bool resetCallback(target_pose::reset::Request &req, target_pose::reset::Response &res);
 };
