@@ -203,7 +203,10 @@ bool target_pose_node::pickplaceCallback(target_pose::pickplace::Request &req, t
   res.status = pick(req.pick_object);
   res.status = place(req.place_object) && res.status;
   if (!res.status) {
+    //TODO make "reset" a service call
+    ROS_WARN("Something went wrong, resetting arm")
     manipulator_group->setStartStateToCurrentState(); // this needs investigating... this is the default
+    gripper_group->setStartStateToCurrentState(); // this needs investigating... this is the default
     initPosition();
   }
   return res.status;
