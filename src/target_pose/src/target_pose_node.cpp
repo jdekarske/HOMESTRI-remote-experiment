@@ -76,18 +76,20 @@ bool target_pose_node::move(float x_des, float y_des, float z_des, float ow_des,
 // this assumes cubes are coming out of a box, will generalize later
 bool target_pose_node::pick(float objx, float objy, float objz)
 {
-
-  bool success = true && move(objx, objy, objz + approach_height, orientation_top[0], orientation_top[1], orientation_top[2], orientation_top[3]) &&
-                 moveGripper(open_position) &&
-                 move(objx, objy, objz + pick_height, orientation_top[0], orientation_top[1], orientation_top[2], orientation_top[3]) &&
-                 moveGripper(closed_position) &&
-                 ros::service::call("/link_attacher_node/attach", attach) &&
-                 move(objx, objy, objz + approach_height, orientation_top[0], orientation_top[1], orientation_top[2], orientation_top[3]);
-  return success;
+  // do everything complain if any one thing doesn't work
+  std::vector<bool> success;
+  success.push_back(move(objx, objy, objz + approach_height, orientation_top[0], orientation_top[1], orientation_top[2], orientation_top[3]));
+  success.push_back(moveGripper(open_position));
+  success.push_back(move(objx, objy, objz + pick_height, orientation_top[0], orientation_top[1], orientation_top[2], orientation_top[3]));
+  success.push_back(moveGripper(closed_position));
+  success.push_back(ros::service::call("/link_attacher_node/attach", attach));
+  success.push_back(move(objx, objy, objz + approach_height, orientation_top[0], orientation_top[1], orientation_top[2], orientation_top[3]));
+  return std::all_of(success.cbegin(), success.cend(), [](bool i){return i;});
 }
 
 bool target_pose_node::pick(std::string object_name)
 {
+    ROS_INFO("picking %s", object_name.c_str());
   if (attach.request.model_name_2 != "")
   {
     ROS_ERROR("Object %s already attached", attach.request.model_name_2.c_str());
@@ -148,16 +150,19 @@ bool target_pose_node::pick(std::string object_name)
 
 bool target_pose_node::place(float objx, float objy, float objz)
 {
-  bool success = true && move(objx, objy - approach_height, objz, orientation_front[0], orientation_front[1], orientation_front[2], orientation_front[3]) &&
-                 move(objx, objy - pick_height, objz, orientation_front[0], orientation_front[1], orientation_front[2], orientation_front[3]) &&
-                 moveGripper(open_position) &&
-                 ros::service::call("/link_attacher_node/detach", attach) &&
-                 move(objx, objy - approach_height, objz, orientation_front[0], orientation_front[1], orientation_front[2], orientation_front[3]);
-  return success;
+    // do all the actions but complain if one of them doesnt work
+  std::vector<bool> success;
+  success.push_back(move(objx, objy - approach_height, objz, orientation_front[0], orientation_front[1], orientation_front[2], orientation_front[3]));
+  success.push_back(move(objx, objy - pick_height, objz, orientation_front[0], orientation_front[1], orientation_front[2], orientation_front[3]));
+  success.push_back(moveGripper(open_position));
+  success.push_back(ros::service::call("/link_attacher_node/detach", attach));
+  success.push_back(move(objx, objy - approach_height, objz, orientation_front[0], orientation_front[1], orientation_front[2], orientation_front[3]));
+  return std::all_of(success.cbegin(), success.cend(), [](bool i){return i;});
 }
 
 bool target_pose_node::place(std::string object_name)
 {
+  ROS_INFO("placing %s", object_name.c_str());
   if (attach.request.model_name_2 == "")
   {
     ROS_ERROR("Nothing to detach!");
@@ -190,7 +195,8 @@ bool target_pose_node::place(std::string object_name)
 
 bool target_pose_node::pickplaceCallback(target_pose::pickplace::Request &req, target_pose::pickplace::Response &res)
 {
-  res.status = pick(req.pick_object) && place(req.place_object); // this is poetic
+  res.status = pick(req.pick_object);
+  res.status = place(req.place_object) && res.status;
   return res.status;
 }
 
