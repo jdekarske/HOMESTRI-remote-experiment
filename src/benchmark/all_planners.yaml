@@ -1,26 +1,42 @@
-# This is an example configuration that loads the "Kitchen" scene from the
-# local MoveIt! warehouse and benchmarks the "manipulator" group over all pairs
-# of motion plan queries and start states in the Kitchen scene.
-
-# Five planners from two different plugins are run a total of 50 times each, with a
-# maximum of 10 seconds per run.  Output is stored in the /tmp/moveit_benchmarks directory.
-
+# https://ros-planning.github.io/moveit_tutorials/doc/benchmarking/benchmarking_tutorial.html#parameters-of-the-benchmarkoptions-class
+# 
 benchmark_config:
     warehouse:
-        host: localhost
-        port: 33829
+        host: 127.0.0.1
+        port: 27017
         scene_name: ISS     # Required
     parameters:
-        name: KitchenPick1
-        runs: 50
+        name: box_picking
+        runs: 30
         group: manipulator      # Required
         timeout: 10.0
-        output_directory: /tmp/moveit_benchmarks/
+        output_directory: /catkin_ws/src/remote-experiment/benchmark/out
         queries: .*
-        start_states: .*
+        start_states: .*box
     planners:
         - plugin: ompl_interface/OMPLPlanner
           planners:
-            - RRTConnectkConfigDefault
-            - BKPIECEkConfigDefault
-            - KPIECEkConfigDefault
+            - LazyPRM
+            - LazyPRMstar
+            - SPARS
+            - SPARStwo
+            - EST
+            - RRT
+            - RRTConnect
+            - RRTstar
+            - TRRT
+            - PRM
+            - PRMstar
+            - FMT
+            - BFMT
+            - BiTRRT
+            - LBTRRT
+            - BiEST
+            # these planners need projection (?)
+            # - SBL
+            # - LBKPIECE
+            # - BKPIECE
+            # - KPIECE
+            # - PDST
+            # - STRIDE
+            # - ProjEST

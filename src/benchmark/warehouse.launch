@@ -1,0 +1,15 @@
+<launch>
+  <!-- Load warehouse containing scenes and queries to benchmark -->
+  <param name="warehouse_exec" value="mongod" />
+  <param name="warehouse_plugin" value="warehouse_ros_mongo::MongoDatabaseConnection" />
+
+  <arg name="moveit_warehouse_database_path" default="$(find experiment_world)/../benchmark/db"/>
+  <node name="$(anon mongo_wrapper_ros)" cwd="ROS_HOME" type="mongo_wrapper_ros.py" pkg="warehouse_ros_mongo">
+    <param name="overwrite" value="false"/>
+    <param name="database_path" value="$(arg moveit_warehouse_database_path)" />
+    <!-- I don't think you can change these... -->
+    <param name="moveit_warehouse_port" value="27017" />
+    <param name="moveit_warehouse_host" value="127.0.0.1" />
+  </node>
+
+</launch>

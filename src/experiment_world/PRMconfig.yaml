@@ -3,10 +3,10 @@ planner_configs:
       type: geometric::LazyPRMstar
       multi_query_planning_enabled: true
       store_planner_data: true
-      load_planner_data: false
-      planner_data_path: /tmp/roadmap.graph
-
-
+      load_planner_data: true
+      planner_data_path: /catkin_ws/src/experiment_world/roadmap.graph
+      optimization_objective: PathLengthOptimizationObjective
+  
   SBL:
     type: geometric::SBL
     range: 0.0  # Max motion added to tree. ==> maxDistance_ default: 0.0, if 0.0, set on setup()
@@ -128,35 +128,29 @@ planner_configs:
     sparse_delta_fraction: 0.25  # delta fraction for connection distance. This value represents the visibility range of sparse samples. default: 0.25
     dense_delta_fraction: 0.001  # delta fraction for interface detection. default: 0.001
     max_failures: 5000  # maximum consecutive failure limit. default: 5000
+
 manipulator:
-  default_planner_config: PersistentLazyPRMstar
+  default_planner_config: RRTConnect
   planner_configs:
-    - SBL
-    - EST
-    - LBKPIECE
-    - BKPIECE
-    - KPIECE
-    - RRT
+    - PersistentLazyPRMstar
     - RRTConnect
+    - RRT
+    - LazyPRMstar
+    - LazyPRM
+    - SPARS
+    - SPARStwo
+    - EST
     - RRTstar
     - TRRT
     - PRM
     - PRMstar
     - FMT
     - BFMT
-    - PDST
-    - STRIDE
     - BiTRRT
     - LBTRRT
     - BiEST
-    - ProjEST
-    - LazyPRM
-    - LazyPRMstar
-    - SPARS
-    - SPARStwo
-    - PersistentLazyPRMstar
 gripper:
-  default_planner_config: ""
+  default_planner_config: RRTConnect
   planner_configs:
     - SBL
     - EST
