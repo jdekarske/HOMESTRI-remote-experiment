@@ -33,6 +33,11 @@ void target_pose_node::initPosition()
   manipulator_group->setNamedTarget("vertical");
   manipulator_group->move();
 
+  // logic: RRTConnect does it in like 0.05s so this is probably a good margin 
+  // TODO this works pretty well but it seems convergence parameters are imminent (see PRMconfig.yaml)
+  manipulator_group->setPlanningTime(0.5); //seconds
+  ROS_INFO("planning time: %f", manipulator_group->getPlanningTime());
+
   moveGripper(open_position);
   ROS_INFO("Arm initial postion");
 }
@@ -41,7 +46,6 @@ bool target_pose_node::moveGripper(float pos)
 {
   gripper_group->setJointValueTarget("gripper_finger1_joint", pos);
   bool success = (gripper_group->move() == moveit::planning_interface::MoveItErrorCode::SUCCESS);
-  // ros::Duration(0.7).sleep(); //wait for the object to attach
   return success;
 }
 
@@ -197,6 +201,10 @@ bool target_pose_node::pickplaceCallback(target_pose::pickplace::Request &req, t
 {
   res.status = pick(req.pick_object);
   res.status = place(req.place_object) && res.status;
+  if (!res.status) {
+    manipulator_group->setStartStateToCurrentState(); // this needs investigating... this is the default
+    initPosition();
+  }
   return res.status;
 }
 
