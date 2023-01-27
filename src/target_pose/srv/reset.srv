@@ -1,0 +1,5 @@
+# sets the robot arm to the home position
+# empty request
+
+---
+bool status
