@@ -93,11 +93,11 @@ namespace ns_spawn_objects
 
         if (ros::service::call("/gazebo/spawn_sdf_model", model))
         {
-            ROS_INFO("Success!");
+          ROS_INFO("Spawn model: %s", model.request.model_name.c_str());
         }
         else
         {
-            ROS_ERROR("Failed to call service");
+            ROS_ERROR("Failed to call spawn service");
             return false;
         }
 

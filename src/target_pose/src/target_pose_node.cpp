@@ -35,6 +35,7 @@ void target_pose_node::initPosition()
 
   // logic: RRTConnect does it in like 0.05s so this is probably a good margin 
   // TODO this works pretty well but it seems convergence parameters are imminent (see PRMconfig.yaml)
+  // TODO test PRMstar
   manipulator_group->setPlanningTime(0.5); //seconds
   ROS_INFO("planning time: %f", manipulator_group->getPlanningTime());
 
