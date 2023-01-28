@@ -31,12 +31,19 @@ RUN apt-get update -qq && apt-get install -y \
 
 ##########################################
 
-COPY src/ src/remote-experiment
-
 COPY dummy-xorg.conf /etc/X11/dummy-xorg.conf 
 COPY startdummy-xorg.bash /etc/X11/startdummy-xorg.bash
 
-# Get everything going
+# run this once so it is cached
+RUN source /opt/ros/$ROS_DISTRO/setup.bash \
+ && apt-get update -qq \
+ && rosdep update \
+ && rosdep install --from-path src --ignore-src -y \
+ && catkin build
+
+COPY src/ src/remote-experiment
+
+# now we only have to compile for the copied stuff
 RUN source /opt/ros/$ROS_DISTRO/setup.bash \
  && apt-get update -qq \
  && rosdep update \
