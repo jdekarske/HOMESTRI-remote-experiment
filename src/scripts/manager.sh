@@ -24,7 +24,7 @@ _kill() {
 
 _rosbag() {
     _source_ros
-    rosbag record --duration $2 -O /catkin_ws/rosbags/"$1"-$(date +'%Y%m%d%H%M%S').bag -a -x '.*camera.*' 
+    rosbag record --duration $1 -O /catkin_ws/rosbags/"$2"-$(date +'%Y%m%d%H%M%S').bag -a -x '.*camera.*' 
 }
 
 _status() {
