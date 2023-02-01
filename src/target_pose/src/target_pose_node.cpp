@@ -127,6 +127,7 @@ bool target_pose_node::pick(std::string object_name)
   else
   {
     ROS_ERROR("Failed to get world properties");
+    return false;
   }
 
   std::string gazebo_object_name = modelNames[position-1]; // assume they are in order, index from 1
