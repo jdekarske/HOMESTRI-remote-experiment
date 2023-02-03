@@ -9,6 +9,8 @@
 // MoveIt
 #include <moveit/planning_scene_interface/planning_scene_interface.h>
 #include <moveit/move_group_interface/move_group_interface.h>
+#include <moveit_msgs/Constraints.h>
+#include <moveit_msgs/OrientationConstraint.h>
 
 // Position
 #include "geometry_msgs/Pose.h"
@@ -63,6 +65,8 @@ public:
     bool moveGripper(Gripper pos);
 
     bool move(float x_des, float y_des, float z_des, float ow_des, float ox_des, float oy_des, float oz_des);
+
+    bool moveConstantOrientation(float x_des, float y_des, float z_des);
 
     bool pick(float objx, float objy, float objz);
 

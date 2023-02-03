@@ -26,6 +26,5 @@ for ((i = 0; i < $num_runs; i++)); do
     # pickplace cunes
     for ((k = 1; k < 5; k++)); do
         rosservice call /pick_place "{pick_object: 'cube_$k', place_object: 'cube_$k'}"
-    rosservice call /pick_place/reset "{}" 
     done
 done

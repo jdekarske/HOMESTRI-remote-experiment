@@ -11,6 +11,7 @@ target_pose_node::target_pose_node(ros::NodeHandle &nodehandle) : nh(nodehandle)
 {
   manipulator_group = new moveit::planning_interface::MoveGroupInterface("manipulator");
   gripper_group = new moveit::planning_interface::MoveGroupInterface("gripper");
+  // manipulator_group->setGoalOrientationTolerance(0.1);
   // manipulator_group->setPoseReferenceFrame("world");
 
   attach.request.model_name_1 = "robot";
@@ -85,6 +86,30 @@ bool target_pose_node::move(float x_des, float y_des, float z_des, float ow_des,
   return success;
 }
 
+bool target_pose_node::moveConstantOrientation(float x_des, float y_des, float z_des)
+{
+  auto current_pose = manipulator_group->getCurrentPose("flange");
+  moveit_msgs::OrientationConstraint orientation_constraint;
+  orientation_constraint.header.frame_id = manipulator_group->getPoseReferenceFrame();
+  orientation_constraint.orientation = current_pose.pose.orientation;
+  orientation_constraint.link_name = "flange";
+  orientation_constraint.absolute_x_axis_tolerance = 1.0; // could be less
+  orientation_constraint.absolute_y_axis_tolerance = 1.0;
+  orientation_constraint.absolute_z_axis_tolerance = 1.0;
+  orientation_constraint.weight = 1.0;
+  moveit_msgs::Constraints constraint;
+  constraint.orientation_constraints.emplace_back(orientation_constraint);
+
+  manipulator_group->setPathConstraints(constraint);
+  bool success = move(x_des, y_des, z_des,
+          current_pose.pose.orientation.w,
+          current_pose.pose.orientation.x,
+          current_pose.pose.orientation.y,
+          current_pose.pose.orientation.z);
+  manipulator_group->clearPathConstraints();
+  return success;
+}
+
 // this assumes cubes are coming out of a box, will generalize later
 bool target_pose_node::pick(float objx, float objy, float objz)
 {
@@ -92,10 +117,10 @@ bool target_pose_node::pick(float objx, float objy, float objz)
   std::vector<bool> success;
   success.push_back(move(objx, objy, objz + approach_height, orientation_top[0], orientation_top[1], orientation_top[2], orientation_top[3]));
   success.push_back(moveGripper(open_position));
-  success.push_back(move(objx, objy, objz + pick_height, orientation_top[0], orientation_top[1], orientation_top[2], orientation_top[3]));
+  success.push_back(moveConstantOrientation(objx, objy, objz + pick_height));
   success.push_back(moveGripper(closed_position));
-  success.push_back(ros::service::call("/link_attacher_node/attach", attach));
-  success.push_back(move(objx, objy, objz + approach_height, orientation_top[0], orientation_top[1], orientation_top[2], orientation_top[3]));
+  success.push_back(ros::service::call("/link_attacher_node/attach", attach)); //TODO abstract this
+  success.push_back(moveConstantOrientation(objx, objy, objz + approach_height));
   return std::all_of(success.cbegin(), success.cend(), [](bool i){return i;});
 }
 
@@ -166,10 +191,10 @@ bool target_pose_node::place(float objx, float objy, float objz)
     // do all the actions but complain if one of them doesnt work
   std::vector<bool> success;
   success.push_back(move(objx, objy - approach_height, objz, orientation_front[0], orientation_front[1], orientation_front[2], orientation_front[3]));
-  success.push_back(move(objx, objy - pick_height, objz, orientation_front[0], orientation_front[1], orientation_front[2], orientation_front[3]));
+  success.push_back(moveConstantOrientation(objx, objy - pick_height, objz));
   success.push_back(moveGripper(open_position));
-  success.push_back(ros::service::call("/link_attacher_node/detach", attach));
-  success.push_back(move(objx, objy - approach_height, objz, orientation_front[0], orientation_front[1], orientation_front[2], orientation_front[3]));
+  success.push_back(ros::service::call("/link_attacher_node/detach", attach)); //TODO abstract this
+  success.push_back(moveConstantOrientation(objx, objy - approach_height, objz));
   return std::all_of(success.cbegin(), success.cend(), [](bool i){return i;});
 }
 

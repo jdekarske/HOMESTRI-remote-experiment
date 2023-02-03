@@ -10,6 +10,7 @@ find_package(catkin REQUIRED COMPONENTS
     moveit_ros_planning
     moveit_ros_planning_interface
     moveit_ros_perception
+    moveit_msgs
     geometry_msgs
     std_msgs
     gazebo_msgs
