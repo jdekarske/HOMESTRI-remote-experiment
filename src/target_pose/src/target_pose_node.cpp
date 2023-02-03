@@ -114,14 +114,13 @@ bool target_pose_node::moveConstantOrientation(float x_des, float y_des, float z
 bool target_pose_node::pick(float objx, float objy, float objz)
 {
   // do everything complain if any one thing doesn't work
-  std::vector<bool> success;
-  success.push_back(move(objx, objy, objz + approach_height, orientation_top[0], orientation_top[1], orientation_top[2], orientation_top[3]));
-  success.push_back(moveGripper(open_position));
-  success.push_back(moveConstantOrientation(objx, objy, objz + pick_height));
-  success.push_back(moveGripper(closed_position));
-  success.push_back(ros::service::call("/link_attacher_node/attach", attach)); //TODO abstract this
-  success.push_back(moveConstantOrientation(objx, objy, objz + approach_height));
-  return std::all_of(success.cbegin(), success.cend(), [](bool i){return i;});
+  bool success = move(objx, objy, objz + approach_height, orientation_top[0], orientation_top[1], orientation_top[2], orientation_top[3]) &&
+      moveGripper(open_position) &&
+      moveConstantOrientation(objx, objy, objz + pick_height) &&
+      moveGripper(closed_position) &&
+      ros::service::call("/link_attacher_node/attach", attach) && //TODO abstract this
+      moveConstantOrientation(objx, objy, objz + approach_height);
+  return success;
 }
 
 bool target_pose_node::pick(std::string object_name)
@@ -189,13 +188,12 @@ bool target_pose_node::pick(std::string object_name)
 bool target_pose_node::place(float objx, float objy, float objz)
 {
     // do all the actions but complain if one of them doesnt work
-  std::vector<bool> success;
-  success.push_back(move(objx, objy - approach_height, objz, orientation_front[0], orientation_front[1], orientation_front[2], orientation_front[3]));
-  success.push_back(moveConstantOrientation(objx, objy - pick_height, objz));
-  success.push_back(moveGripper(open_position));
-  success.push_back(ros::service::call("/link_attacher_node/detach", attach)); //TODO abstract this
-  success.push_back(moveConstantOrientation(objx, objy - approach_height, objz));
-  return std::all_of(success.cbegin(), success.cend(), [](bool i){return i;});
+  bool success = move(objx, objy - approach_height, objz, orientation_front[0], orientation_front[1], orientation_front[2], orientation_front[3]) &&
+      moveConstantOrientation(objx, objy - pick_height, objz) &&
+      moveGripper(open_position) &&
+      ros::service::call("/link_attacher_node/detach", attach) && //TODO abstract this
+      moveConstantOrientation(objx, objy - approach_height, objz);
+  return success;
 }
 
 bool target_pose_node::place(std::string object_name)
@@ -234,7 +232,7 @@ bool target_pose_node::place(std::string object_name)
 bool target_pose_node::pickplaceCallback(target_pose::pickplace::Request &req, target_pose::pickplace::Response &res)
 {
   res.status = pick(req.pick_object);
-  res.status = place(req.place_object) && res.status;
+  res.status = res.status && place(req.place_object);
   if (!res.status) {
     ROS_WARN("Something went wrong, resetting arm");
     initPosition();
