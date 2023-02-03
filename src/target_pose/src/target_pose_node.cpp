@@ -31,6 +31,9 @@ target_pose_node::~target_pose_node()
 
 bool target_pose_node::initPosition()
 {
+  attach.request.model_name_2 = "";
+  ros::service::call("/link_attacher_node/detach", attach);
+  
   manipulator_group->setStartStateToCurrentState();
   gripper_group->setStartStateToCurrentState();
   manipulator_group->setNamedTarget("vertical");
