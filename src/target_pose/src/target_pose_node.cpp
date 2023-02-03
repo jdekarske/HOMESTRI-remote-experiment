@@ -107,6 +107,16 @@ bool target_pose_node::moveConstantOrientation(float x_des, float y_des, float z
           current_pose.pose.orientation.y,
           current_pose.pose.orientation.z);
   manipulator_group->clearPathConstraints();
+
+  // fallback without constraints just in case
+  if (!success) {
+  success = move(x_des, y_des, z_des,
+          current_pose.pose.orientation.w,
+          current_pose.pose.orientation.x,
+          current_pose.pose.orientation.y,
+          current_pose.pose.orientation.z);
+  }
+
   return success;
 }
 
