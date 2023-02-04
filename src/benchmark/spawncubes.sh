@@ -10,6 +10,8 @@ while [[ "$#" -gt 0 ]]; do
 done
 
 for ((i = 0; i < $num_runs; i++)); do
+    echo "run $i"
+
     # reset the arm
     rosservice call /pick_place/reset "{}"
 
@@ -23,8 +25,18 @@ for ((i = 0; i < $num_runs; i++)); do
         overwrite: false, position: $j, color: [0,0,1], length: 0, width: 0}"
     done
 
-    # pickplace cunes
+    randpos=( 1 2 3 4 5 6 7 8 )
+    randpos=( $(shuf -e "${randpos[@]}") )
+
+    # pickplace cubes
     for ((k = 1; k < 5; k++)); do
-        rosservice call /pick_place "{pick_object: 'cube_$k', place_object: 'cube_$k'}"
+	picks=$(( $i * 4 + $k - 1 ))
+	echo "pickplace $picks"
+	start=`date +%s.%N`
+            rosservice call /pick_place "{pick_object: 'cube_$k', place_object: 'cube_${randpos[$k]}'}"
+        end=`date +%s.%N`
+        runtime=$( echo "$end - $start" | bc -l )
+        echo "runtime $runtime"
+	# TODO total runtime
     done
 done

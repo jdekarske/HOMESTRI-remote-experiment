@@ -32,8 +32,11 @@ target_pose_node::~target_pose_node()
 
 bool target_pose_node::initPosition()
 {
-  attach.request.model_name_2 = "";
-  ros::service::call("/link_attacher_node/detach", attach);
+  if (attach.request.model_name_2 != "")
+  {
+    ros::service::call("/link_attacher_node/detach", attach);
+    attach.request.model_name_2 = "";
+  }
   
   manipulator_group->setStartStateToCurrentState();
   gripper_group->setStartStateToCurrentState();
