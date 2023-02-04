@@ -37,7 +37,7 @@ bool target_pose_node::initPosition()
   
   manipulator_group->setStartStateToCurrentState();
   gripper_group->setStartStateToCurrentState();
-  manipulator_group->setNamedTarget("vertical");
+  manipulator_group->setNamedTarget("home-box");
   manipulator_group->move();
 
   // logic: RRTConnect does it in like 0.05s so this is probably a good margin 
