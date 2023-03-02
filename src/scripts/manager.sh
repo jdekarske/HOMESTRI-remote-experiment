@@ -17,6 +17,11 @@ _start() {
     roslaunch experiment_world main_experiment.launch
 }
 
+_start_local() {
+    _source_ros
+    roslaunch experiment_world main_experiment.launch ws_port:=9090 ws_externalport:=9090
+}
+
 _kill() {
     _source_ros
     rosnode kill -a && pkill -f '(ros)|(gzserver)'
@@ -35,6 +40,7 @@ _status() {
 _main() {
     case $1 in
       -s|--start) _start;;
+      -l|--startlocal) _start_local;;
       -k|--kill) _kill;;
       -b|--rosbag) _rosbag $2 $3;; # duration then workerID
       -t|--status) _status;;
