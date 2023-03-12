@@ -1,12 +1,25 @@
 # HOMESTRI-remote-experiment
-To start with the local gui:
 
-`./gui-docker -it jdekarske/homestri-remote-experiment:latest`
+This repository is the robotic simulation component of a human-robot interaction experiment.
 
-Include `-p 9090:9090` to access from roslibjs.
+The other components for this experiment are:
+- [GUI](https://github.com/jdekarske/HOMESTRI-dragdrop)
+- [Robot Base](https://github.com/jdekarske/HOMESTRI-UR5e)
+- Network Configuration (Currently private for security)
+- Container Management (Currently private for security)
 
-To start the environment:
+## Install
+This software was designed for portability and concurrency using a microservice architecture. However, since simulated camera rendering is required, you must use the nvidia runtime.
 
-`roslaunch experiment_world mainexperiment.launch`
+1. Install [nvidia-docker](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html#docker) noting the requirements.
 
-Sometimes the controllers throw a bunch of errors and the robot won't move, I think this is because gazebo takes a while to start the first time. just kill it and restart.
+2. Download the latest experiment image: `docker pull jdekarske/HOMESTRI-remote-experiment:latest`
+
+## Run
+Ideally the associated Container Management software is used to distribute human subjects to container environments. For manually managed containers there are two steps:
+
+1. Start the container `docker run -name ros -p 9090:9090 jdekarske/HOMESTRI-remote-experiment`
+2. Start the experiment `docker exec --it ros /catkin_ws/src/remote-experiment/scripts/manager.sh -l`
+
+## Development
+The ideal development environment for this project depends on your editor preference. If you are using VSCode, use the [development container](https://code.visualstudio.com/docs/devcontainers/containers) workflow. Otherwise, you can run the container with a volume mount of the src directory: `docker run --it -v $PWD/src/:/catkin_ws/src/remote-experiment/ jdekarske/HOMESTRI-remote-experiment bash`
